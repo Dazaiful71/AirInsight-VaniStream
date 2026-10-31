@@ -34,6 +34,8 @@ GOLD_PAIRS = os.path.join(GOLD_DIR, "duplicate_pairs_sheet.csv")
 GOLD_PAIRS_KEY = os.path.join(GOLD_DIR, "duplicate_pairs_HIDDEN_KEY.csv")   # only evals read this, never annotators
 GOLD_QUERIES = os.path.join(GOLD_DIR, "query_sheet.csv")
 GOLD_SENTENCE_INDEX = os.path.join(GOLD_DIR, "valtest_sentence_index.csv")
+GOLD_LLM_OVERLAP = os.path.join(GOLD_DIR, "llm", "genre_llm_overlap.csv")   # LLM pre-labels; only agreement_eval.py reads them, and only after human labels exist
+GOLD_LLM_REST = os.path.join(GOLD_DIR, "llm", "genre_llm_rest.csv")
 GOLD_ASR_DIR = os.path.join(GOLD_DIR, "asr_refs")   # one hand-corrected <audio file stem>.txt per WER bulletin (TODO: not created yet)
 ASR_HYP_DIR = os.path.join(ROOT, "data", "asr_hyp")   # Whisper outputs per model: <model>/<stem>.txt (small = the option A transcripts)
 SAMPLE_TEXT_DIR = os.path.join(SAMPLE_DIR, "text")

@@ -10,7 +10,8 @@ Systems, each tagged with a category in the result JSON:
   * the older models/air-genre-classifier checkpoint if present, marked UNVERIFIED (its training data is unknown)
 All are evaluated ONLY on the gold sheet. Silver labels are never scored as gold.
 A class with fewer than MIN_CLASS_SUPPORT gold examples gets no score ("insufficient support") and is left out of macro-F1.
-Cohen's kappa is computed between annotator 1 and annotator 2 on the overlap file once annotator 2 has labelled it.
+Inter-annotator kappa (annotator 1 vs annotator 2 on the overlap file) is computed and labelled `inter_annotator_kappa` ONLY with --two-humans;
+without the flag it is skipped with a message.
 Feeds: results/genre_eval_*.json -> genre table (see eval/README.md).
 """
 import json
@@ -146,6 +147,9 @@ def kappa_block(ids_to_a1, rows2, labels, resamples=cfg.BOOTSTRAP_RESAMPLES, see
 import finetune_genre as ft  # noqa: E402
 
 ALL_SYSTEMS = ("baselines", "fast", "zero-shot", "finetuned")
+KAPPA_SKIPPED_MESSAGE = ("inter_annotator_kappa skipped: the second annotator column must come from a different person; "
+                         "pass --two-humans only if it does. (Agreement with the LLM is measured by agreement_eval.py as "
+                         "human_vs_llm_agreement, which is not inter-annotator kappa.)")
 CAT_ZERO_SHOT = "zero-shot (no training on this corpus)"
 CAT_FINETUNED = "fine-tuned-on-silver (train-day silver labels only, leakage-filtered)"
 CAT_BASELINE = "trained-on-silver baseline (train-day silver labels only, leakage-filtered)"
@@ -241,7 +245,7 @@ def finetuned_block(y, texts, splits, labels, ft_cfg, train_texts, train_labels,
 
 
 # ---------------------------------------------------------------- driver
-def compute(paths, labels, systems=ALL_SYSTEMS, classifiers=None, finetune=None):
+def compute(paths, labels, systems=ALL_SYSTEMS, classifiers=None, finetune=None, two_humans=False):
     gold = common.read_csv(paths["gold"])
     texts = [r["sentence_text"] for r in gold]
     y = [r["annotator_1_label"].strip() for r in gold]
@@ -299,27 +303,34 @@ def compute(paths, labels, systems=ALL_SYSTEMS, classifiers=None, finetune=None)
         else:
             results["systems"]["project_checkpoint_air_genre_classifier"] = {
                 "category": CAT_PROJECT_CKPT, "status": f"not run: no checkpoint at {common.rel(ckpt or '')}"}
-    a2 = paths.get("annotator2")
-    if a2 and os.path.isfile(a2):
-        results["kappa_annotator1_vs_annotator2"] = kappa_block({r["id"]: r["annotator_1_label"].strip() for r in gold},
-                                                                  common.read_csv(a2), labels)
+    if two_humans:
+        a2 = paths.get("annotator2")
+        if a2 and os.path.isfile(a2):
+            results["inter_annotator_kappa"] = {
+                "assumption": "--two-humans was passed: annotator_1_label and annotator_2_label were typed by two different people",
+                **kappa_block({r["id"]: r["annotator_1_label"].strip() for r in gold}, common.read_csv(a2), labels)}
+        else:
+            results["inter_annotator_kappa"] = {"status": "not computed: overlap file missing"}
     else:
-        results["kappa_annotator1_vs_annotator2"] = {"status": "not computed: overlap file missing"}
-    return results, {"seeds_for_multi_run": list(cfg.SEEDS_FOR_MULTI_RUN)}
+        results["kappa_skipped"] = KAPPA_SKIPPED_MESSAGE
+        print("[genre_eval] " + KAPPA_SKIPPED_MESSAGE)
+    return results, {"seeds_for_multi_run": list(cfg.SEEDS_FOR_MULTI_RUN), "two_humans_flag": bool(two_humans)}
 
 
-def run(paths=None, results_dir=None, systems=ALL_SYSTEMS, classifiers=None, finetune=None):
+def run(paths=None, results_dir=None, systems=ALL_SYSTEMS, classifiers=None, finetune=None, two_humans=False):
     p = paths or default_paths()
     labels = cfg.genre_labels()
     st = gold_status(p, labels)
     inputs = [p["gold"], p["annotator2"], p["store_db"]]
-    return common.save_or_report(NAME, st, lambda: compute(p, labels, systems, classifiers, finetune), inputs, results_dir)
+    return common.save_or_report(NAME, st, lambda: compute(p, labels, systems, classifiers, finetune, two_humans), inputs, results_dir)
 
 
 def main() -> int:
     import argparse
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--systems", default=",".join(ALL_SYSTEMS), help="comma list of: " + ", ".join(ALL_SYSTEMS))
+    ap.add_argument("--two-humans", action="store_true",
+                    help="compute and label inter_annotator_kappa; pass ONLY if annotator_1_label and annotator_2_label come from two different people")
     ap.add_argument("--train-finetune", action="store_true", help="train missing fine-tune seeds first (slow; off by default)")
     a = ap.parse_args()
     systems = tuple(s.strip() for s in a.systems.split(",") if s.strip())
@@ -327,7 +338,7 @@ def main() -> int:
     if bad:
         ap.error(f"unknown systems: {bad}")
     ft_cfg = {"train": True} if a.train_finetune else None
-    return run(systems=systems, finetune=ft_cfg)[0]
+    return run(systems=systems, finetune=ft_cfg, two_humans=a.two_humans)[0]
 
 
 if __name__ == "__main__":

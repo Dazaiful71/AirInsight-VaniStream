@@ -89,11 +89,11 @@ Transcripts are cut into sentences with NLTK's punkt tokenizer and each sentence
 
 Sentences are processed in a stream. A sentence is dropped when its cosine similarity to any stored or already-accepted sentence is at least 0.85; otherwise it is kept and added to the pool. <!-- nlp_pipeline.py: DEFAULT_MMR_THRESHOLD 0.85, mmr_novelty_filter_detailed --> The 0.85 value was fixed before any labelled data existed and is not tuned in the pipeline; the dedup evaluation (Section 5) examines other thresholds on validation pairs. <!-- ROADMAP.md section 2 item 4 ("one fixed threshold (0.85), no justification") -->
 
-On option A the gate was applied across all splits in processing order. It read 9,519 sentences (train 5,560; validation 1,981; test 1,978) and kept 4,264 (train 2,520; validation 879; test 865). <!-- store_A/build_report.json: sentences_before_gate, sentences_after_gate (store_A/ is not committed; ROADMAP.md section 8c) --> This is a count of what the gate did, not a measure of whether its decisions were right. Because the gate is order dependent and runs across splits, a validation or test sentence can be dropped because of an earlier training-day sentence. <!-- ROADMAP.md section 8c "Choices and caveats" --> For ablation, a store built with the gate off keeps all 9,519 sentences. <!-- store_A_nodedup/build_report.json: segments_in_store 9519, threshold 1.01 (gate off) -->
+On option A the gate was applied across all splits in processing order. It read 9,519 sentences (train 5,560; validation 1,981; test 1,978) and kept 4,264 (train 2,520; validation 879; test 865). <!-- results/store_reports/store_A_build_report.json: sentences_before_gate, sentences_after_gate (committed copy, identical by SHA-256 to store_A/build_report.json; ROADMAP.md section 8c) --> This is a count of what the gate did, not a measure of whether its decisions were right. Because the gate is order dependent and runs across splits, a validation or test sentence can be dropped because of an earlier training-day sentence. <!-- ROADMAP.md section 8c "Choices and caveats" --> For ablation, a store built with the gate off keeps all 9,519 sentences. <!-- results/store_reports/store_A_nodedup_build_report.json: segments_in_store 9519, threshold 1.01 (gate off) -->
 
 ### 4.4 Genre classification
 
-Each sentence receives one of ten labels: Politics, Economy, Science & Technology, Sports, International, Defence & Security, Health, Environment, Society & Culture, Other. <!-- nlp_pipeline.py: GENRE_LABELS --> Three backends exist: zero-shot classification with facebook/bart-large-mnli, a faster zero-shot cross-encoder (cross-encoder/nli-MiniLM2-L6-H768), and a DistilBERT classifier fine-tuned on silver labels. <!-- nlp_pipeline.py: DEFAULT_CLASSIFIER_MODEL, FAST_CLASSIFIER_MODEL; train_genre_classifier.py: DEFAULT_MODEL_NAME distilbert-base-uncased --> The genre column of the option A store comes from the fast backend, chosen for speed on CPU; these labels are silver and their quality is UNVERIFIED. <!-- store_A/build_report.json: classifier_backend "fast"; ROADMAP.md section 8c (BART measured at 1.65 s per sentence against 0.18 s for the fast backend on 24 sentences) --> TODO: no fine-tuned checkpoint exists yet, so no fine-tuned result can be reported.
+Each sentence receives one of ten labels: Politics, Economy, Science & Technology, Sports, International, Defence & Security, Health, Environment, Society & Culture, Other. <!-- nlp_pipeline.py: GENRE_LABELS --> Three backends exist: zero-shot classification with facebook/bart-large-mnli, a faster zero-shot cross-encoder (cross-encoder/nli-MiniLM2-L6-H768), and a DistilBERT classifier fine-tuned on silver labels. <!-- nlp_pipeline.py: DEFAULT_CLASSIFIER_MODEL, FAST_CLASSIFIER_MODEL; train_genre_classifier.py: DEFAULT_MODEL_NAME distilbert-base-uncased --> The genre column of the option A store comes from the fast backend, chosen for speed on CPU; these labels are silver and their quality is UNVERIFIED. <!-- results/store_reports/store_A_build_report.json: classifier_backend "fast"; ROADMAP.md section 8c (BART measured at 1.65 s per sentence against 0.18 s for the fast backend on 24 sentences) --> TODO: no fine-tuned checkpoint exists yet, so no fine-tuned result can be reported.
 
 ### 4.5 Two-tier retrieval and answer generation
 
@@ -117,7 +117,7 @@ TODO: a human check of about 30 generated answers, reported as a small check and
 
 **Who did what.** The sampling sheets (genre, pair, query templates) were built with code written by an LLM assistant. <!-- ROADMAP.md section 8b; model identity for this earlier work: the commit trailers name Claude Sonnet 5.5 from the first commit on; for work before that commit this is UNVERIFIED --> The genre sheet and the pair sheet were then pre-labelled by an LLM: Claude Sonnet 5.5, on 2026-10-31, in one pass, using only the sentence text and the label descriptions in `data/gold/README.md`, with no access to model predictions, silver labels, similarity scores, the hidden key file or human labels. <!-- data/gold/llm/PROVENANCE.md (model, date, files read, statement) --> A human then reviewed and corrected every LLM label. TODO: number of genre labels changed by the human: [N_GENRE_CORRECTIONS] of 400; number of pair labels changed: [N_PAIR_CORRECTIONS] of 100; per-class change table [TODO]. Only the human-reviewed labels are gold; the LLM labels are never scored as gold.
 
-**From-scratch overlap.** The 175-sentence overlap was labelled by the human from scratch, before the human saw the LLM labels. TODO: confirm which column of which file holds these labels (the existing evaluation code reads `annotator_2_label` from the overlap file and computes a kappa against `annotator_1_label`; that number must not be called inter-annotator agreement unless a second human produced one of the two columns, UNVERIFIED). Agreement with the LLM is reported as human-versus-LLM agreement, and it is NOT inter-annotator kappa. TODO: no script yet computes human-versus-LLM agreement; to be written. TODO: if a second human annotator is available, inter-annotator kappa can be reported separately (not planned in this draft).
+**From-scratch overlap.** The 175-sentence overlap was labelled by the human from scratch, before the human saw the LLM labels. TODO: confirm which column of which file holds these labels (`eval/agreement_eval.py` assumes `annotator_2_label` in the overlap sheet; change with `--overlap-col`). Agreement with the LLM is reported as human-versus-LLM agreement (`eval/agreement_eval.py`, output named `human_vs_llm_agreement`), and it is NOT inter-annotator kappa. The 225 sentences the human only reviewed are reported separately and flagged as inflated by anchoring, so only the from-scratch overlap is an independent comparison. `eval/genre_eval.py` computes `inter_annotator_kappa` only when run with `--two-humans`, which must be passed only if the two label columns come from two different people; TODO: whether a second human annotates anything (not planned in this draft).
 
 **Pair labels.** same: the same fact in nearly the same wording; paraphrase: the same fact in different wording; follow-up: the same story with new or updated information; different: a different fact. <!-- data/gold/llm/PROVENANCE.md (definitions given for the LLM pass) --> The LLM read "follow-up" at the level of the story, so the boundary between follow-up and different is the least certain part. <!-- ROADMAP.md section 8f; data/gold/llm/PROVENANCE.md --> TODO: state whether the human used the same definitions.
 
@@ -135,7 +135,7 @@ TODO: a human check of about 30 generated answers, reported as a small check and
 - **Duplicate detection.** Precision, recall and F1 at each cosine threshold from 0.60 to 0.95 in steps of 0.01. The positive class is same plus paraphrase (primary); the alternative counts only same as positive and is also reported. The threshold is chosen on validation-day pairs (best F1, ties to the higher threshold) and reported on test-day pairs. <!-- eval/eval_config.py: DEDUP_THRESHOLDS; eval/dedup_eval.py -->
 - **Retrieval.** Recall@1, 3, 5 and 10, mean reciprocal rank and nDCG@5 with binary relevance, over the top 20 results of each system. <!-- eval/eval_config.py: RETRIEVAL_KS (1, 3, 5, 10), NDCG_K 5, RETRIEVAL_DEPTH 20 --> Relevant sentences are judged on raw sentences and mapped to segments of the store: exactly by text, otherwise to the kept segment that caused the sentence's rejection, otherwise reported as unmapped. <!-- eval/retrieval_eval.py (docstring) -->
 - **ASR.** Word error rate with substitutions, deletions and insertions, per file and overall, after lowercasing, removing punctuation and apostrophes; numbers are not converted between digits and words, which makes the rate pessimistic where references and Whisper differ in style. <!-- eval/asr_eval.py (docstring, NORMALISATION) -->
-- **Agreement.** Human-versus-LLM agreement on the overlap (Section 5.2).
+- **Agreement.** Human-versus-LLM agreement: observed agreement, Cohen's kappa, per-label counts and confusion matrix with 95% bootstrap intervals, for the from-scratch overlap and, flagged, for the reviewed remainder (Section 5.2). <!-- eval/agreement_eval.py; eval/eval_config.py: BOOTSTRAP_RESAMPLES 1000, SEED 42 -->
 - **Multiple seeds.** Anything trainable is run with 5 seeds (42 to 46) and reported as mean and sample standard deviation. <!-- eval/eval_config.py: SEEDS_FOR_MULTI_RUN -->
 
 ### 5.4 Baselines and ablations
@@ -183,11 +183,12 @@ Source: `results/genre_eval_*.json`
 | | | | | | | |
 
 ### Table 4. Agreement between the human labels and the LLM pre-labels (not inter-annotator kappa)
-Source: TODO: no script and no result file exist yet.
+Source: `results/human_vs_llm_agreement_*.json` (reported separately for the from-scratch overlap and for the reviewed remainder)
 
-| Items compared | Observed agreement | Cohen's kappa (human vs LLM) | 95% CI | Human corrections of LLM labels |
-|---|---|---|---|---|
-| | | | | |
+| Group | Items compared | Observed agreement | Observed agreement 95% CI | Cohen's kappa (human vs LLM) | Kappa 95% CI | Human corrections of LLM labels |
+|---|---|---|---|---|---|---|
+| overlap, human from scratch | | | | | | |
+| remainder, human reviewed (inflated by anchoring) | | | | | | |
 
 ### Table 5. Duplicate-pair detection
 Source: `results/dedup_eval_*.json`
@@ -264,13 +265,13 @@ Speech recognition
 Novelty gate and labels
 - The gate uses one fixed threshold (0.85) that was not tuned before the evaluation; it catches near-identical sentences, not paraphrases or follow-ups; it is order dependent and ran across all splits.
 - The store's genre labels are silver (fast zero-shot backend) and of unverified quality; the fine-tuned classifier has only silver training labels, and no checkpoint exists yet.
-- The broadcast hour is missing for 710 segments (Morning, Midday, Evening and News At Nine bulletins and some others without a time in the file name). <!-- store_A/build_report.json: null_hour_total 710 -->
+- The broadcast hour is missing for 710 segments (Morning, Midday, Evening and News At Nine bulletins and some others without a time in the file name). <!-- results/store_reports/store_A_build_report.json: null_hour_total 710 -->
 - The duplicate-slot finding covers option A only.
 - The pair sheet is sampled across similarity bands, so precision and recall on it describe that sample, not deployment.
 
 Annotation
 - The genre and pair labels began as one LLM pass by a single model that also built the sampling sheets; they are gold only after human review, and the review may be influenced by the LLM labels (anchoring).
-- Agreement with the LLM is not inter-annotator agreement; TODO: whether a second human annotated anything.
+- Agreement with the LLM is not inter-annotator agreement; TODO: whether a second human annotated anything (inter-annotator kappa is computed only with `--two-humans`).
 - `Other` is inflated by boilerplate and accident stories; Science & Technology and Health have few sentences, so several per-class scores will be reported as insufficient support.
 - The follow-up versus different boundary for pairs is subjective.
 - Relevance judging uses pooled candidates from two rankers, which may favour similar retrievers; gold-relevant sentences that the gate dropped are mapped to the sentence that caused the drop.

@@ -136,7 +136,7 @@ def _genre_fixture(tmp_path, with_annotator2=True):
 def test_genre_eval_end_to_end_on_synthetic_gold(tmp_path):
     paths = _genre_fixture(tmp_path)
     res_dir = str(tmp_path / "res")
-    code, out = genre_eval.run(paths, res_dir, systems=("baselines",))
+    code, out = genre_eval.run(paths, res_dir, systems=("baselines",), two_humans=True)
     assert code == 0 and os.path.isfile(out)
     d = load(out)
     assert d["seed"] == cfg.SEED and d["inputs"][0]["sha256"] and d["name"] == "genre_eval"
@@ -149,7 +149,8 @@ def test_genre_eval_end_to_end_on_synthetic_gold(tmp_path):
     assert r["systems"]["tfidf_logreg_train_silver"]["all_gold"]["macro_f1"] == pytest.approx(1.0)
     # per split blocks exist; with 10 gold sentences per day-class nothing falls below the support limit here
     assert "val_days_only" in r["systems"]["majority_class_train_silver"]
-    k = r["kappa_annotator1_vs_annotator2"]
+    k = r["inter_annotator_kappa"]
+    assert "different people" in k["assumption"] and "kappa_skipped" not in r
     # 10 overlap rows, one disagreement (g0): po 0.9; a1: Sports 10; a2: Sports 9 + Politics 1 -> pe = 10*9/100 = 0.9 -> kappa 0
     assert k["n_overlap"] == 10 and k["kappa"] == pytest.approx(0.0)
 

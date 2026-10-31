@@ -1,0 +1,1566 @@
+{
+  "totals": {
+    "total_sentences": 9519,
+    "novel_sentences": 4264,
+    "rejected_sentences": 5255,
+    "reduction_pct": 55.2
+  },
+  "per_file": [
+    {
+      "source_file": "text/2026-08-10/English-0005-0010-7.txt",
+      "total_sentences": 29,
+      "novel_sentences": 29,
+      "rejected_sentences": 0
+    },
+    {
+      "source_file": "text/2026-08-10/Engglish-0105-0110-1.txt",
+      "total_sentences": 34,
+      "novel_sentences": 34,
+      "rejected_sentences": 0
+    },
+    {
+      "source_file": "text/2026-08-10/English-0105-0110-14.txt",
+      "total_sentences": 29,
+      "novel_sentences": 15,
+      "rejected_sentences": 14
+    },
+    {
+      "source_file": "text/2026-08-10/English-0205-0210-8.txt",
+      "total_sentences": 29,
+      "novel_sentences": 7,
+      "rejected_sentences": 22
+    },
+    {
+      "source_file": "text/2026-08-10/English-0305-0310-8.txt",
+      "total_sentences": 31,
+      "novel_sentences": 13,
+      "rejected_sentences": 18
+    },
+    {
+      "source_file": "text/2026-08-10/English-0405-0410-7.txt",
+      "total_sentences": 30,
+      "novel_sentences": 1,
+      "rejected_sentences": 29
+    },
+    {
+      "source_file": "text/2026-08-10/English-0505-0510-7.txt",
+      "total_sentences": 29,
+      "novel_sentences": 10,
+      "rejected_sentences": 19
+    },
+    {
+      "source_file": "text/2026-08-10/English-0605-0610-6.txt",
+      "total_sentences": 36,
+      "novel_sentences": 19,
+      "rejected_sentences": 17
+    },
+    {
+      "source_file": "text/2026-08-10/English-0705-0710-8.txt",
+      "total_sentences": 30,
+      "novel_sentences": 4,
+      "rejected_sentences": 26
+    },
+    {
+      "source_file": "text/2026-08-10/Morning-News-0815-0830-7.txt",
+      "total_sentences": 107,
+      "novel_sentences": 83,
+      "rejected_sentences": 24
+    },
+    {
+      "source_file": "text/2026-08-10/English-0905-0910-8.txt",
+      "total_sentences": 30,
+      "novel_sentences": 7,
+      "rejected_sentences": 23
+    },
+    {
+      "source_file": "text/2026-08-10/English-1005-1010-6.txt",
+      "total_sentences": 32,
+      "novel_sentences": 10,
+      "rejected_sentences": 22
+    },
+    {
+      "source_file": "text/2026-08-10/English-1105-1110-9.txt",
+      "total_sentences": 29,
+      "novel_sentences": 11,
+      "rejected_sentences": 18
+    },
+    {
+      "source_file": "text/2026-08-10/1505-4.txt",
+      "total_sentences": 28,
+      "novel_sentences": 18,
+      "rejected_sentences": 10
+    },
+    {
+      "source_file": "text/2026-08-10/1605-eng.txt",
+      "total_sentences": 30,
+      "novel_sentences": 19,
+      "rejected_sentences": 11
+    },
+    {
+      "source_file": "text/2026-08-10/1705-4.txt",
+      "total_sentences": 39,
+      "novel_sentences": 11,
+      "rejected_sentences": 28
+    },
+    {
+      "source_file": "text/2026-08-10/English-1805-1810-5.txt",
+      "total_sentences": 39,
+      "novel_sentences": 23,
+      "rejected_sentences": 16
+    },
+    {
+      "source_file": "text/2026-08-10/English-1905-1910-5.txt",
+      "total_sentences": 35,
+      "novel_sentences": 4,
+      "rejected_sentences": 31
+    },
+    {
+      "source_file": "text/2026-08-10/News-At-Nine-2100-2115-5.txt",
+      "total_sentences": 6,
+      "novel_sentences": 4,
+      "rejected_sentences": 2
+    },
+    {
+      "source_file": "text/2026-08-10/English-2205.txt",
+      "total_sentences": 33,
+      "novel_sentences": 15,
+      "rejected_sentences": 18
+    },
+    {
+      "source_file": "text/2026-08-10/English-2305-2310-7.txt",
+      "total_sentences": 32,
+      "novel_sentences": 6,
+      "rejected_sentences": 26
+    },
+    {
+      "source_file": "text/2026-08-10/205.txt",
+      "total_sentences": 30,
+      "novel_sentences": 11,
+      "rejected_sentences": 19
+    },
+    {
+      "source_file": "text/2026-08-10/midday-english.txt",
+      "total_sentences": 99,
+      "novel_sentences": 60,
+      "rejected_sentences": 39
+    },
+    {
+      "source_file": "text/2026-08-16/English-0005-0010-14.txt",
+      "total_sentences": 32,
+      "novel_sentences": 31,
+      "rejected_sentences": 1
+    },
+    {
+      "source_file": "text/2026-08-16/English-0105-0110-23.txt",
+      "total_sentences": 26,
+      "novel_sentences": 16,
+      "rejected_sentences": 10
+    },
+    {
+      "source_file": "text/2026-08-16/English-0205-0210-14.txt",
+      "total_sentences": 28,
+      "novel_sentences": 10,
+      "rejected_sentences": 18
+    },
+    {
+      "source_file": "text/2026-08-16/English-0305-0310-15.txt",
+      "total_sentences": 26,
+      "novel_sentences": 9,
+      "rejected_sentences": 17
+    },
+    {
+      "source_file": "text/2026-08-16/English0305-0310-5.txt",
+      "total_sentences": 31,
+      "novel_sentences": 29,
+      "rejected_sentences": 2
+    },
+    {
+      "source_file": "text/2026-08-16/English-0405-0410-12.txt",
+      "total_sentences": 26,
+      "novel_sentences": 9,
+      "rejected_sentences": 17
+    },
+    {
+      "source_file": "text/2026-08-16/English-0505-0510-13.txt",
+      "total_sentences": 32,
+      "novel_sentences": 9,
+      "rejected_sentences": 23
+    },
+    {
+      "source_file": "text/2026-08-16/English-0605-0610-12.txt",
+      "total_sentences": 33,
+      "novel_sentences": 8,
+      "rejected_sentences": 25
+    },
+    {
+      "source_file": "text/2026-08-16/0705-1.txt",
+      "total_sentences": 27,
+      "novel_sentences": 11,
+      "rejected_sentences": 16
+    },
+    {
+      "source_file": "text/2026-08-16/Morning-News-0815-0830-14.txt",
+      "total_sentences": 104,
+      "novel_sentences": 70,
+      "rejected_sentences": 34
+    },
+    {
+      "source_file": "text/2026-08-16/0905.txt",
+      "total_sentences": 35,
+      "novel_sentences": 11,
+      "rejected_sentences": 24
+    },
+    {
+      "source_file": "text/2026-08-16/English-1005-1010-12.txt",
+      "total_sentences": 31,
+      "novel_sentences": 5,
+      "rejected_sentences": 26
+    },
+    {
+      "source_file": "text/2026-08-16/English-1105-1110-13.txt",
+      "total_sentences": 31,
+      "novel_sentences": 11,
+      "rejected_sentences": 20
+    },
+    {
+      "source_file": "text/2026-08-16/English-1205-1210-13.txt",
+      "total_sentences": 39,
+      "novel_sentences": 15,
+      "rejected_sentences": 24
+    },
+    {
+      "source_file": "text/2026-08-16/1305.txt",
+      "total_sentences": 40,
+      "novel_sentences": 5,
+      "rejected_sentences": 35
+    },
+    {
+      "source_file": "text/2026-08-16/Mid-Day-News-English-1400-1415-6.txt",
+      "total_sentences": 114,
+      "novel_sentences": 65,
+      "rejected_sentences": 49
+    },
+    {
+      "source_file": "text/2026-08-16/English-1605-1610-4.txt",
+      "total_sentences": 28,
+      "novel_sentences": 10,
+      "rejected_sentences": 18
+    },
+    {
+      "source_file": "text/2026-08-16/English-1705-1710-7.txt",
+      "total_sentences": 33,
+      "novel_sentences": 24,
+      "rejected_sentences": 9
+    },
+    {
+      "source_file": "text/2026-08-16/eng1805-1.txt",
+      "total_sentences": 35,
+      "novel_sentences": 18,
+      "rejected_sentences": 17
+    },
+    {
+      "source_file": "text/2026-08-16/eng1905-1.txt",
+      "total_sentences": 28,
+      "novel_sentences": 11,
+      "rejected_sentences": 17
+    },
+    {
+      "source_file": "text/2026-08-16/English-2005-2010.txt",
+      "total_sentences": 36,
+      "novel_sentences": 18,
+      "rejected_sentences": 18
+    },
+    {
+      "source_file": "text/2026-08-16/2100-eng.txt",
+      "total_sentences": 120,
+      "novel_sentences": 81,
+      "rejected_sentences": 39
+    },
+    {
+      "source_file": "text/2026-08-16/ee2205-1.txt",
+      "total_sentences": 34,
+      "novel_sentences": 5,
+      "rejected_sentences": 29
+    },
+    {
+      "source_file": "text/2026-08-16/English-2305-2310-13.txt",
+      "total_sentences": 29,
+      "novel_sentences": 6,
+      "rejected_sentences": 23
+    },
+    {
+      "source_file": "text/2026-08-28/English-0005-0010-25.txt",
+      "total_sentences": 35,
+      "novel_sentences": 33,
+      "rejected_sentences": 2
+    },
+    {
+      "source_file": "text/2026-08-28/English-0105-0110-1-1.txt",
+      "total_sentences": 36,
+      "novel_sentences": 33,
+      "rejected_sentences": 3
+    },
+    {
+      "source_file": "text/2026-08-28/English-0105-0110-44.txt",
+      "total_sentences": 38,
+      "novel_sentences": 13,
+      "rejected_sentences": 25
+    },
+    {
+      "source_file": "text/2026-08-28/English-0205-0210-21.txt",
+      "total_sentences": 36,
+      "novel_sentences": 11,
+      "rejected_sentences": 25
+    },
+    {
+      "source_file": "text/2026-08-28/English-0305-0310-26.txt",
+      "total_sentences": 32,
+      "novel_sentences": 10,
+      "rejected_sentences": 22
+    },
+    {
+      "source_file": "text/2026-08-28/English-0405-0410-23.txt",
+      "total_sentences": 33,
+      "novel_sentences": 3,
+      "rejected_sentences": 30
+    },
+    {
+      "source_file": "text/2026-08-28/English-0505-0510-20.txt",
+      "total_sentences": 35,
+      "novel_sentences": 11,
+      "rejected_sentences": 24
+    },
+    {
+      "source_file": "text/2026-08-28/English-0605-0610-20.txt",
+      "total_sentences": 35,
+      "novel_sentences": 11,
+      "rejected_sentences": 24
+    },
+    {
+      "source_file": "text/2026-08-28/English-0705-0710-22.txt",
+      "total_sentences": 37,
+      "novel_sentences": 4,
+      "rejected_sentences": 33
+    },
+    {
+      "source_file": "text/2026-08-28/Morning-News-0815-0830-26.txt",
+      "total_sentences": 106,
+      "novel_sentences": 73,
+      "rejected_sentences": 33
+    },
+    {
+      "source_file": "text/2026-08-28/English-0905-0910-26.txt",
+      "total_sentences": 35,
+      "novel_sentences": 12,
+      "rejected_sentences": 23
+    },
+    {
+      "source_file": "text/2026-08-28/English-1005-1010-22.txt",
+      "total_sentences": 36,
+      "novel_sentences": 13,
+      "rejected_sentences": 23
+    },
+    {
+      "source_file": "text/2026-08-28/English-1105-1110-23.txt",
+      "total_sentences": 38,
+      "novel_sentences": 17,
+      "rejected_sentences": 21
+    },
+    {
+      "source_file": "text/2026-08-28/English-1205-1210-20.txt",
+      "total_sentences": 34,
+      "novel_sentences": 3,
+      "rejected_sentences": 31
+    },
+    {
+      "source_file": "text/2026-08-28/English-1505.txt",
+      "total_sentences": 35,
+      "novel_sentences": 19,
+      "rejected_sentences": 16
+    },
+    {
+      "source_file": "text/2026-08-28/English-1605-1610-6.txt",
+      "total_sentences": 36,
+      "novel_sentences": 8,
+      "rejected_sentences": 28
+    },
+    {
+      "source_file": "text/2026-08-28/English-1705-1710-10.txt",
+      "total_sentences": 31,
+      "novel_sentences": 8,
+      "rejected_sentences": 23
+    },
+    {
+      "source_file": "text/2026-08-28/English-1805-1810-13.txt",
+      "total_sentences": 32,
+      "novel_sentences": 15,
+      "rejected_sentences": 17
+    },
+    {
+      "source_file": "text/2026-08-28/English-1905-1910-15.txt",
+      "total_sentences": 36,
+      "novel_sentences": 9,
+      "rejected_sentences": 27
+    },
+    {
+      "source_file": "text/2026-08-28/English-2005-2010-6.txt",
+      "total_sentences": 36,
+      "novel_sentences": 4,
+      "rejected_sentences": 32
+    },
+    {
+      "source_file": "text/2026-08-28/News-At-Nine-2100-2115-13.txt",
+      "total_sentences": 37,
+      "novel_sentences": 25,
+      "rejected_sentences": 12
+    },
+    {
+      "source_file": "text/2026-08-28/eng-2205.txt",
+      "total_sentences": 35,
+      "novel_sentences": 13,
+      "rejected_sentences": 22
+    },
+    {
+      "source_file": "text/2026-08-28/English2305.txt",
+      "total_sentences": 34,
+      "novel_sentences": 9,
+      "rejected_sentences": 25
+    },
+    {
+      "source_file": "text/2026-08-28/Midday-News.txt",
+      "total_sentences": 112,
+      "novel_sentences": 50,
+      "rejected_sentences": 62
+    },
+    {
+      "source_file": "text/2026-09-03/English-0005-0010-2.txt",
+      "total_sentences": 32,
+      "novel_sentences": 31,
+      "rejected_sentences": 1
+    },
+    {
+      "source_file": "text/2026-09-03/Engglish-0105-0110.txt",
+      "total_sentences": 31,
+      "novel_sentences": 29,
+      "rejected_sentences": 2
+    },
+    {
+      "source_file": "text/2026-09-03/English-0105-0110-4.txt",
+      "total_sentences": 34,
+      "novel_sentences": 13,
+      "rejected_sentences": 21
+    },
+    {
+      "source_file": "text/2026-09-03/English-0205-0210-1.txt",
+      "total_sentences": 31,
+      "novel_sentences": 13,
+      "rejected_sentences": 18
+    },
+    {
+      "source_file": "text/2026-09-03/English-0305-0310-2.txt",
+      "total_sentences": 32,
+      "novel_sentences": 13,
+      "rejected_sentences": 19
+    },
+    {
+      "source_file": "text/2026-09-03/English0305-1.txt",
+      "total_sentences": 27,
+      "novel_sentences": 18,
+      "rejected_sentences": 9
+    },
+    {
+      "source_file": "text/2026-09-03/English-0405-0410-2.txt",
+      "total_sentences": 31,
+      "novel_sentences": 6,
+      "rejected_sentences": 25
+    },
+    {
+      "source_file": "text/2026-09-03/English-0505-0510-1.txt",
+      "total_sentences": 32,
+      "novel_sentences": 5,
+      "rejected_sentences": 27
+    },
+    {
+      "source_file": "text/2026-09-03/English-0605-0610-2.txt",
+      "total_sentences": 37,
+      "novel_sentences": 15,
+      "rejected_sentences": 22
+    },
+    {
+      "source_file": "text/2026-09-03/English-0705-0710-2.txt",
+      "total_sentences": 37,
+      "novel_sentences": 5,
+      "rejected_sentences": 32
+    },
+    {
+      "source_file": "text/2026-09-03/Morning-News-0815-0830-1.txt",
+      "total_sentences": 122,
+      "novel_sentences": 69,
+      "rejected_sentences": 53
+    },
+    {
+      "source_file": "text/2026-09-03/English-0905-0910-2.txt",
+      "total_sentences": 29,
+      "novel_sentences": 4,
+      "rejected_sentences": 25
+    },
+    {
+      "source_file": "text/2026-09-03/English-1005-1010-1.txt",
+      "total_sentences": 36,
+      "novel_sentences": 11,
+      "rejected_sentences": 25
+    },
+    {
+      "source_file": "text/2026-09-03/English-1105-1110-2.txt",
+      "total_sentences": 35,
+      "novel_sentences": 10,
+      "rejected_sentences": 25
+    },
+    {
+      "source_file": "text/2026-09-03/English-1205-1210-2.txt",
+      "total_sentences": 32,
+      "novel_sentences": 10,
+      "rejected_sentences": 22
+    },
+    {
+      "source_file": "text/2026-09-03/English-1605-1610.txt",
+      "total_sentences": 33,
+      "novel_sentences": 22,
+      "rejected_sentences": 11
+    },
+    {
+      "source_file": "text/2026-09-03/English1705-1.txt",
+      "total_sentences": 31,
+      "novel_sentences": 10,
+      "rejected_sentences": 21
+    },
+    {
+      "source_file": "text/2026-09-03/English-1805-1810-1.txt",
+      "total_sentences": 33,
+      "novel_sentences": 15,
+      "rejected_sentences": 18
+    },
+    {
+      "source_file": "text/2026-09-03/English-1905-1910-1.txt",
+      "total_sentences": 30,
+      "novel_sentences": 4,
+      "rejected_sentences": 26
+    },
+    {
+      "source_file": "text/2026-09-03/2005ee.txt",
+      "total_sentences": 32,
+      "novel_sentences": 15,
+      "rejected_sentences": 17
+    },
+    {
+      "source_file": "text/2026-09-03/News-At-Nine-2100-2115-1.txt",
+      "total_sentences": 111,
+      "novel_sentences": 63,
+      "rejected_sentences": 48
+    },
+    {
+      "source_file": "text/2026-09-03/English-2205-2210.txt",
+      "total_sentences": 30,
+      "novel_sentences": 8,
+      "rejected_sentences": 22
+    },
+    {
+      "source_file": "text/2026-09-03/English-2305-2310-3.txt",
+      "total_sentences": 35,
+      "novel_sentences": 4,
+      "rejected_sentences": 31
+    },
+    {
+      "source_file": "text/2026-09-03/Midday-news.txt",
+      "total_sentences": 84,
+      "novel_sentences": 29,
+      "rejected_sentences": 55
+    },
+    {
+      "source_file": "text/2026-09-06/English-0005-0010-6.txt",
+      "total_sentences": 32,
+      "novel_sentences": 31,
+      "rejected_sentences": 1
+    },
+    {
+      "source_file": "text/2026-09-06/English-0105-0110-8.txt",
+      "total_sentences": 32,
+      "novel_sentences": 9,
+      "rejected_sentences": 23
+    },
+    {
+      "source_file": "text/2026-09-06/English-0105-0110-9.txt",
+      "total_sentences": 29,
+      "novel_sentences": 23,
+      "rejected_sentences": 6
+    },
+    {
+      "source_file": "text/2026-09-06/English-0205-0210-4.txt",
+      "total_sentences": 27,
+      "novel_sentences": 10,
+      "rejected_sentences": 17
+    },
+    {
+      "source_file": "text/2026-09-06/English-0305-0310-5.txt",
+      "total_sentences": 34,
+      "novel_sentences": 8,
+      "rejected_sentences": 26
+    },
+    {
+      "source_file": "text/2026-09-06/eng-0505.txt",
+      "total_sentences": 34,
+      "novel_sentences": 5,
+      "rejected_sentences": 29
+    },
+    {
+      "source_file": "text/2026-09-06/0605.txt",
+      "total_sentences": 29,
+      "novel_sentences": 14,
+      "rejected_sentences": 15
+    },
+    {
+      "source_file": "text/2026-09-06/English-0705-0710-5.txt",
+      "total_sentences": 33,
+      "novel_sentences": 11,
+      "rejected_sentences": 22
+    },
+    {
+      "source_file": "text/2026-09-06/0905.txt",
+      "total_sentences": 34,
+      "novel_sentences": 11,
+      "rejected_sentences": 23
+    },
+    {
+      "source_file": "text/2026-09-06/1005.txt",
+      "total_sentences": 32,
+      "novel_sentences": 7,
+      "rejected_sentences": 25
+    },
+    {
+      "source_file": "text/2026-09-06/English-1105-1110-5.txt",
+      "total_sentences": 35,
+      "novel_sentences": 7,
+      "rejected_sentences": 28
+    },
+    {
+      "source_file": "text/2026-09-06/English-1205-1210-4.txt",
+      "total_sentences": 31,
+      "novel_sentences": 2,
+      "rejected_sentences": 29
+    },
+    {
+      "source_file": "text/2026-09-06/Mid-Day-News-English-1400-1415.txt",
+      "total_sentences": 100,
+      "novel_sentences": 76,
+      "rejected_sentences": 24
+    },
+    {
+      "source_file": "text/2026-09-06/Eng-1505.txt",
+      "total_sentences": 33,
+      "novel_sentences": 9,
+      "rejected_sentences": 24
+    },
+    {
+      "source_file": "text/2026-09-06/1605-2.txt",
+      "total_sentences": 35,
+      "novel_sentences": 27,
+      "rejected_sentences": 8
+    },
+    {
+      "source_file": "text/2026-09-06/1705-2.txt",
+      "total_sentences": 31,
+      "novel_sentences": 11,
+      "rejected_sentences": 20
+    },
+    {
+      "source_file": "text/2026-09-06/English-1805-1.txt",
+      "total_sentences": 37,
+      "novel_sentences": 23,
+      "rejected_sentences": 14
+    },
+    {
+      "source_file": "text/2026-09-06/English-1905-1.txt",
+      "total_sentences": 38,
+      "novel_sentences": 15,
+      "rejected_sentences": 23
+    },
+    {
+      "source_file": "text/2026-09-06/2005eng.txt",
+      "total_sentences": 29,
+      "novel_sentences": 17,
+      "rejected_sentences": 12
+    },
+    {
+      "source_file": "text/2026-09-06/English-2205-1.txt",
+      "total_sentences": 44,
+      "novel_sentences": 30,
+      "rejected_sentences": 14
+    },
+    {
+      "source_file": "text/2026-09-06/English-2305-2310-6.txt",
+      "total_sentences": 39,
+      "novel_sentences": 11,
+      "rejected_sentences": 28
+    },
+    {
+      "source_file": "text/2026-09-06/News-At-Nine.txt",
+      "total_sentences": 117,
+      "novel_sentences": 53,
+      "rejected_sentences": 64
+    },
+    {
+      "source_file": "text/2026-09-06/morninng.txt",
+      "total_sentences": 103,
+      "novel_sentences": 48,
+      "rejected_sentences": 55
+    },
+    {
+      "source_file": "text/2026-09-30/English-0005-0010-30.txt",
+      "total_sentences": 31,
+      "novel_sentences": 29,
+      "rejected_sentences": 2
+    },
+    {
+      "source_file": "text/2026-09-30/Eeenglish-0105-0110-3.txt",
+      "total_sentences": 34,
+      "novel_sentences": 32,
+      "rejected_sentences": 2
+    },
+    {
+      "source_file": "text/2026-09-30/English-0105-0110-46.txt",
+      "total_sentences": 32,
+      "novel_sentences": 19,
+      "rejected_sentences": 13
+    },
+    {
+      "source_file": "text/2026-09-30/English-0205-0210-28.txt",
+      "total_sentences": 29,
+      "novel_sentences": 9,
+      "rejected_sentences": 20
+    },
+    {
+      "source_file": "text/2026-09-30/English-0305-0310-28.txt",
+      "total_sentences": 26,
+      "novel_sentences": 7,
+      "rejected_sentences": 19
+    },
+    {
+      "source_file": "text/2026-09-30/English-0405-0410-30.txt",
+      "total_sentences": 29,
+      "novel_sentences": 9,
+      "rejected_sentences": 20
+    },
+    {
+      "source_file": "text/2026-09-30/English-0505-0510-24.txt",
+      "total_sentences": 30,
+      "novel_sentences": 7,
+      "rejected_sentences": 23
+    },
+    {
+      "source_file": "text/2026-09-30/English-0605-0610-29.txt",
+      "total_sentences": 29,
+      "novel_sentences": 10,
+      "rejected_sentences": 19
+    },
+    {
+      "source_file": "text/2026-09-30/English-0705-0710-33.txt",
+      "total_sentences": 31,
+      "novel_sentences": 9,
+      "rejected_sentences": 22
+    },
+    {
+      "source_file": "text/2026-09-30/Morning-News-0815-0830-28.txt",
+      "total_sentences": 90,
+      "novel_sentences": 59,
+      "rejected_sentences": 31
+    },
+    {
+      "source_file": "text/2026-09-30/English-0905-0910-28.txt",
+      "total_sentences": 27,
+      "novel_sentences": 8,
+      "rejected_sentences": 19
+    },
+    {
+      "source_file": "text/2026-09-30/English-1005-1010-26.txt",
+      "total_sentences": 30,
+      "novel_sentences": 9,
+      "rejected_sentences": 21
+    },
+    {
+      "source_file": "text/2026-09-30/English-1105-1110-27.txt",
+      "total_sentences": 29,
+      "novel_sentences": 12,
+      "rejected_sentences": 17
+    },
+    {
+      "source_file": "text/2026-09-30/English-1205-1210-24.txt",
+      "total_sentences": 29,
+      "novel_sentences": 3,
+      "rejected_sentences": 26
+    },
+    {
+      "source_file": "text/2026-09-30/English-1605-16510.txt",
+      "total_sentences": 22,
+      "novel_sentences": 20,
+      "rejected_sentences": 2
+    },
+    {
+      "source_file": "text/2026-09-30/1705-13.txt",
+      "total_sentences": 27,
+      "novel_sentences": 15,
+      "rejected_sentences": 12
+    },
+    {
+      "source_file": "text/2026-09-30/English-1805-551810.txt",
+      "total_sentences": 29,
+      "novel_sentences": 7,
+      "rejected_sentences": 22
+    },
+    {
+      "source_file": "text/2026-09-30/English-1905-1910-16.txt",
+      "total_sentences": 26,
+      "novel_sentences": 4,
+      "rejected_sentences": 22
+    },
+    {
+      "source_file": "text/2026-09-30/2005e-2.txt",
+      "total_sentences": 27,
+      "novel_sentences": 8,
+      "rejected_sentences": 19
+    },
+    {
+      "source_file": "text/2026-09-30/News-At-Nine-2100-521515.txt",
+      "total_sentences": 95,
+      "novel_sentences": 53,
+      "rejected_sentences": 42
+    },
+    {
+      "source_file": "text/2026-09-30/English-2205-2210-11.txt",
+      "total_sentences": 31,
+      "novel_sentences": 3,
+      "rejected_sentences": 28
+    },
+    {
+      "source_file": "text/2026-09-30/English-2305-2310.txt",
+      "total_sentences": 27,
+      "novel_sentences": 7,
+      "rejected_sentences": 20
+    },
+    {
+      "source_file": "text/2026-09-30/15050.txt",
+      "total_sentences": 32,
+      "novel_sentences": 11,
+      "rejected_sentences": 21
+    },
+    {
+      "source_file": "text/2026-09-30/midday-english-6.txt",
+      "total_sentences": 103,
+      "novel_sentences": 70,
+      "rejected_sentences": 33
+    },
+    {
+      "source_file": "text/2026-10-19/English-0005-0010-12.txt",
+      "total_sentences": 34,
+      "novel_sentences": 32,
+      "rejected_sentences": 2
+    },
+    {
+      "source_file": "text/2026-10-19/English-0105-0110-32.txt",
+      "total_sentences": 33,
+      "novel_sentences": 18,
+      "rejected_sentences": 15
+    },
+    {
+      "source_file": "text/2026-10-19/English-0205-0210-17.txt",
+      "total_sentences": 33,
+      "novel_sentences": 10,
+      "rejected_sentences": 23
+    },
+    {
+      "source_file": "text/2026-10-19/English-0305-0310-18.txt",
+      "total_sentences": 31,
+      "novel_sentences": 6,
+      "rejected_sentences": 25
+    },
+    {
+      "source_file": "text/2026-10-19/English-0405-0410-21.txt",
+      "total_sentences": 30,
+      "novel_sentences": 1,
+      "rejected_sentences": 29
+    },
+    {
+      "source_file": "text/2026-10-19/English-0505-0510-15.txt",
+      "total_sentences": 3,
+      "novel_sentences": 2,
+      "rejected_sentences": 1
+    },
+    {
+      "source_file": "text/2026-10-19/English-0605-0610-14.txt",
+      "total_sentences": 25,
+      "novel_sentences": 16,
+      "rejected_sentences": 9
+    },
+    {
+      "source_file": "text/2026-10-19/English-0705-0710-20.txt",
+      "total_sentences": 30,
+      "novel_sentences": 8,
+      "rejected_sentences": 22
+    },
+    {
+      "source_file": "text/2026-10-19/Morning-News-0815-0830-19.txt",
+      "total_sentences": 111,
+      "novel_sentences": 76,
+      "rejected_sentences": 35
+    },
+    {
+      "source_file": "text/2026-10-19/English-0905-0910-17.txt",
+      "total_sentences": 28,
+      "novel_sentences": 5,
+      "rejected_sentences": 23
+    },
+    {
+      "source_file": "text/2026-10-19/English-1005-1010-18.txt",
+      "total_sentences": 30,
+      "novel_sentences": 6,
+      "rejected_sentences": 24
+    },
+    {
+      "source_file": "text/2026-10-19/1205-1.txt",
+      "total_sentences": 28,
+      "novel_sentences": 10,
+      "rejected_sentences": 18
+    },
+    {
+      "source_file": "text/2026-10-19/1305.txt",
+      "total_sentences": 30,
+      "novel_sentences": 14,
+      "rejected_sentences": 16
+    },
+    {
+      "source_file": "text/2026-10-19/1505-8.txt",
+      "total_sentences": 32,
+      "novel_sentences": 17,
+      "rejected_sentences": 15
+    },
+    {
+      "source_file": "text/2026-10-19/1605-6.txt",
+      "total_sentences": 30,
+      "novel_sentences": 22,
+      "rejected_sentences": 8
+    },
+    {
+      "source_file": "text/2026-10-19/English1805.txt",
+      "total_sentences": 31,
+      "novel_sentences": 16,
+      "rejected_sentences": 15
+    },
+    {
+      "source_file": "text/2026-10-19/English1905-1.txt",
+      "total_sentences": 30,
+      "novel_sentences": 16,
+      "rejected_sentences": 14
+    },
+    {
+      "source_file": "text/2026-10-19/English-2005-2.txt",
+      "total_sentences": 30,
+      "novel_sentences": 15,
+      "rejected_sentences": 15
+    },
+    {
+      "source_file": "text/2026-10-19/English-2205-22510.txt",
+      "total_sentences": 30,
+      "novel_sentences": 9,
+      "rejected_sentences": 21
+    },
+    {
+      "source_file": "text/2026-10-19/2300.txt",
+      "total_sentences": 27,
+      "novel_sentences": 3,
+      "rejected_sentences": 24
+    },
+    {
+      "source_file": "text/2026-10-19/English-2305-2310-13.txt",
+      "total_sentences": 27,
+      "novel_sentences": 1,
+      "rejected_sentences": 26
+    },
+    {
+      "source_file": "text/2026-10-19/11000.txt",
+      "total_sentences": 31,
+      "novel_sentences": 1,
+      "rejected_sentences": 30
+    },
+    {
+      "source_file": "text/2026-10-19/17005.txt",
+      "total_sentences": 29,
+      "novel_sentences": 5,
+      "rejected_sentences": 24
+    },
+    {
+      "source_file": "text/2026-10-19/News-at-nine-1.txt",
+      "total_sentences": 93,
+      "novel_sentences": 49,
+      "rejected_sentences": 44
+    },
+    {
+      "source_file": "text/2026-10-19/middday.txt",
+      "total_sentences": 96,
+      "novel_sentences": 50,
+      "rejected_sentences": 46
+    },
+    {
+      "source_file": "text/2026-10-21/English-0005-0010-14.txt",
+      "total_sentences": 31,
+      "novel_sentences": 29,
+      "rejected_sentences": 2
+    },
+    {
+      "source_file": "text/2026-10-21/English0105.txt",
+      "total_sentences": 31,
+      "novel_sentences": 10,
+      "rejected_sentences": 21
+    },
+    {
+      "source_file": "text/2026-10-21/English-0205-0210-19.txt",
+      "total_sentences": 32,
+      "novel_sentences": 2,
+      "rejected_sentences": 30
+    },
+    {
+      "source_file": "text/2026-10-21/English-0305-0310-20.txt",
+      "total_sentences": 33,
+      "novel_sentences": 2,
+      "rejected_sentences": 31
+    },
+    {
+      "source_file": "text/2026-10-21/English0405.txt",
+      "total_sentences": 32,
+      "novel_sentences": 2,
+      "rejected_sentences": 30
+    },
+    {
+      "source_file": "text/2026-10-21/English-0505-0510-17.txt",
+      "total_sentences": 30,
+      "novel_sentences": 4,
+      "rejected_sentences": 26
+    },
+    {
+      "source_file": "text/2026-10-21/English0605-3.txt",
+      "total_sentences": 30,
+      "novel_sentences": 14,
+      "rejected_sentences": 16
+    },
+    {
+      "source_file": "text/2026-10-21/English-0705-0710-22.txt",
+      "total_sentences": 33,
+      "novel_sentences": 22,
+      "rejected_sentences": 11
+    },
+    {
+      "source_file": "text/2026-10-21/Morning-News-0815-0830-22.txt",
+      "total_sentences": 115,
+      "novel_sentences": 77,
+      "rejected_sentences": 38
+    },
+    {
+      "source_file": "text/2026-10-21/English-0905-0910-19.txt",
+      "total_sentences": 33,
+      "novel_sentences": 19,
+      "rejected_sentences": 14
+    },
+    {
+      "source_file": "text/2026-10-21/English-1005-1010-20.txt",
+      "total_sentences": 28,
+      "novel_sentences": 7,
+      "rejected_sentences": 21
+    },
+    {
+      "source_file": "text/2026-10-21/English-1105-1110-19.txt",
+      "total_sentences": 29,
+      "novel_sentences": 23,
+      "rejected_sentences": 6
+    },
+    {
+      "source_file": "text/2026-10-21/English-1205-1210-16.txt",
+      "total_sentences": 31,
+      "novel_sentences": 24,
+      "rejected_sentences": 7
+    },
+    {
+      "source_file": "text/2026-10-21/1505-9.txt",
+      "total_sentences": 32,
+      "novel_sentences": 24,
+      "rejected_sentences": 8
+    },
+    {
+      "source_file": "text/2026-10-21/English-16055-1610.txt",
+      "total_sentences": 31,
+      "novel_sentences": 18,
+      "rejected_sentences": 13
+    },
+    {
+      "source_file": "text/2026-10-21/1705-7.txt",
+      "total_sentences": 30,
+      "novel_sentences": 13,
+      "rejected_sentences": 17
+    },
+    {
+      "source_file": "text/2026-10-21/1805ee-7.txt",
+      "total_sentences": 29,
+      "novel_sentences": 16,
+      "rejected_sentences": 13
+    },
+    {
+      "source_file": "text/2026-10-21/1905ee-5.txt",
+      "total_sentences": 32,
+      "novel_sentences": 9,
+      "rejected_sentences": 23
+    },
+    {
+      "source_file": "text/2026-10-21/English-2005-2010-7.txt",
+      "total_sentences": 29,
+      "novel_sentences": 11,
+      "rejected_sentences": 18
+    },
+    {
+      "source_file": "text/2026-10-21/English-2205-225510-1.txt",
+      "total_sentences": 27,
+      "novel_sentences": 17,
+      "rejected_sentences": 10
+    },
+    {
+      "source_file": "text/2026-10-21/English-2305-2310-15.txt",
+      "total_sentences": 31,
+      "novel_sentences": 10,
+      "rejected_sentences": 21
+    },
+    {
+      "source_file": "text/2026-10-21/English01055.txt",
+      "total_sentences": 28,
+      "novel_sentences": 6,
+      "rejected_sentences": 22
+    },
+    {
+      "source_file": "text/2026-10-21/midday-english-4.txt",
+      "total_sentences": 95,
+      "novel_sentences": 37,
+      "rejected_sentences": 58
+    },
+    {
+      "source_file": "text/2026-10-21/nine-6.txt",
+      "total_sentences": 88,
+      "novel_sentences": 38,
+      "rejected_sentences": 50
+    },
+    {
+      "source_file": "text/2026-10-24/English-0005-0010-17.txt",
+      "total_sentences": 29,
+      "novel_sentences": 27,
+      "rejected_sentences": 2
+    },
+    {
+      "source_file": "text/2026-10-24/English-0105-0110-37.txt",
+      "total_sentences": 27,
+      "novel_sentences": 6,
+      "rejected_sentences": 21
+    },
+    {
+      "source_file": "text/2026-10-24/English-0105-0110-38.txt",
+      "total_sentences": 31,
+      "novel_sentences": 29,
+      "rejected_sentences": 2
+    },
+    {
+      "source_file": "text/2026-10-24/English-0205-0210-24.txt",
+      "total_sentences": 29,
+      "novel_sentences": 8,
+      "rejected_sentences": 21
+    },
+    {
+      "source_file": "text/2026-10-24/English-0305-0310-23.txt",
+      "total_sentences": 29,
+      "novel_sentences": 3,
+      "rejected_sentences": 26
+    },
+    {
+      "source_file": "text/2026-10-24/English-0405-0410-25.txt",
+      "total_sentences": 28,
+      "novel_sentences": 2,
+      "rejected_sentences": 26
+    },
+    {
+      "source_file": "text/2026-10-24/English-0505-0510-20.txt",
+      "total_sentences": 28,
+      "novel_sentences": 11,
+      "rejected_sentences": 17
+    },
+    {
+      "source_file": "text/2026-10-24/English-0605-0610-17.txt",
+      "total_sentences": 31,
+      "novel_sentences": 17,
+      "rejected_sentences": 14
+    },
+    {
+      "source_file": "text/2026-10-24/English-0705-0710-26.txt",
+      "total_sentences": 29,
+      "novel_sentences": 9,
+      "rejected_sentences": 20
+    },
+    {
+      "source_file": "text/2026-10-24/Morning-News-0815-0830-25.txt",
+      "total_sentences": 114,
+      "novel_sentences": 57,
+      "rejected_sentences": 57
+    },
+    {
+      "source_file": "text/2026-10-24/English-0905-0910-22.txt",
+      "total_sentences": 35,
+      "novel_sentences": 3,
+      "rejected_sentences": 32
+    },
+    {
+      "source_file": "text/2026-10-24/English-1005-1010-23.txt",
+      "total_sentences": 35,
+      "novel_sentences": 6,
+      "rejected_sentences": 29
+    },
+    {
+      "source_file": "text/2026-10-24/English-1105-1110-22.txt",
+      "total_sentences": 36,
+      "novel_sentences": 2,
+      "rejected_sentences": 34
+    },
+    {
+      "source_file": "text/2026-10-24/English-1205-1210-19.txt",
+      "total_sentences": 34,
+      "novel_sentences": 14,
+      "rejected_sentences": 20
+    },
+    {
+      "source_file": "text/2026-10-24/1505ee.txt",
+      "total_sentences": 35,
+      "novel_sentences": 27,
+      "rejected_sentences": 8
+    },
+    {
+      "source_file": "text/2026-10-24/1605ee.txt",
+      "total_sentences": 37,
+      "novel_sentences": 19,
+      "rejected_sentences": 18
+    },
+    {
+      "source_file": "text/2026-10-24/English-1705-1710-7.txt",
+      "total_sentences": 35,
+      "novel_sentences": 15,
+      "rejected_sentences": 20
+    },
+    {
+      "source_file": "text/2026-10-24/English-1805-1.txt",
+      "total_sentences": 33,
+      "novel_sentences": 12,
+      "rejected_sentences": 21
+    },
+    {
+      "source_file": "text/2026-10-24/English-1905-1.txt",
+      "total_sentences": 34,
+      "novel_sentences": 11,
+      "rejected_sentences": 23
+    },
+    {
+      "source_file": "text/2026-10-24/English-2005-2010-9.txt",
+      "total_sentences": 33,
+      "novel_sentences": 14,
+      "rejected_sentences": 19
+    },
+    {
+      "source_file": "text/2026-10-24/2205ee-1.txt",
+      "total_sentences": 29,
+      "novel_sentences": 19,
+      "rejected_sentences": 10
+    },
+    {
+      "source_file": "text/2026-10-24/English-2305-2310-18.txt",
+      "total_sentences": 27,
+      "novel_sentences": 1,
+      "rejected_sentences": 26
+    },
+    {
+      "source_file": "text/2026-10-24/Mid-Day-English.txt",
+      "total_sentences": 107,
+      "novel_sentences": 39,
+      "rejected_sentences": 68
+    },
+    {
+      "source_file": "text/2026-10-24/News-At-Nine-1.txt",
+      "total_sentences": 98,
+      "novel_sentences": 41,
+      "rejected_sentences": 57
+    },
+    {
+      "source_file": "text/2026-10-27/English-0005-0010-21.txt",
+      "total_sentences": 30,
+      "novel_sentences": 27,
+      "rejected_sentences": 3
+    },
+    {
+      "source_file": "text/2026-10-27/English-0105-0110-43.txt",
+      "total_sentences": 32,
+      "novel_sentences": 5,
+      "rejected_sentences": 27
+    },
+    {
+      "source_file": "text/2026-10-27/English-0205-0210-26.txt",
+      "total_sentences": 28,
+      "novel_sentences": 4,
+      "rejected_sentences": 24
+    },
+    {
+      "source_file": "text/2026-10-27/English-0305-0310-25.txt",
+      "total_sentences": 27,
+      "novel_sentences": 6,
+      "rejected_sentences": 21
+    },
+    {
+      "source_file": "text/2026-10-27/English0305-9.txt",
+      "total_sentences": 31,
+      "novel_sentences": 26,
+      "rejected_sentences": 5
+    },
+    {
+      "source_file": "text/2026-10-27/English-0405-0410-28.txt",
+      "total_sentences": 27,
+      "novel_sentences": 3,
+      "rejected_sentences": 24
+    },
+    {
+      "source_file": "text/2026-10-27/English-0505-0510-22.txt",
+      "total_sentences": 29,
+      "novel_sentences": 10,
+      "rejected_sentences": 19
+    },
+    {
+      "source_file": "text/2026-10-27/English-0605-0610-19.txt",
+      "total_sentences": 34,
+      "novel_sentences": 19,
+      "rejected_sentences": 15
+    },
+    {
+      "source_file": "text/2026-10-27/English-0705-0710-29.txt",
+      "total_sentences": 36,
+      "novel_sentences": 12,
+      "rejected_sentences": 24
+    },
+    {
+      "source_file": "text/2026-10-27/Morning-News-0815-0830-28.txt",
+      "total_sentences": 116,
+      "novel_sentences": 64,
+      "rejected_sentences": 52
+    },
+    {
+      "source_file": "text/2026-10-27/English-0905-0910-26.txt",
+      "total_sentences": 35,
+      "novel_sentences": 13,
+      "rejected_sentences": 22
+    },
+    {
+      "source_file": "text/2026-10-27/English-1005-1010-26.txt",
+      "total_sentences": 35,
+      "novel_sentences": 10,
+      "rejected_sentences": 25
+    },
+    {
+      "source_file": "text/2026-10-27/English-1105-1110-24.txt",
+      "total_sentences": 33,
+      "novel_sentences": 5,
+      "rejected_sentences": 28
+    },
+    {
+      "source_file": "text/2026-10-27/English-1205-1210-22.txt",
+      "total_sentences": 26,
+      "novel_sentences": 1,
+      "rejected_sentences": 25
+    },
+    {
+      "source_file": "text/2026-10-27/English1300.txt",
+      "total_sentences": 31,
+      "novel_sentences": 10,
+      "rejected_sentences": 21
+    },
+    {
+      "source_file": "text/2026-10-27/English1605-3.txt",
+      "total_sentences": 33,
+      "novel_sentences": 20,
+      "rejected_sentences": 13
+    },
+    {
+      "source_file": "text/2026-10-27/English1705-5.txt",
+      "total_sentences": 30,
+      "novel_sentences": 20,
+      "rejected_sentences": 10
+    },
+    {
+      "source_file": "text/2026-10-27/English-1805-2.txt",
+      "total_sentences": 28,
+      "novel_sentences": 11,
+      "rejected_sentences": 17
+    },
+    {
+      "source_file": "text/2026-10-27/English-1905-2.txt",
+      "total_sentences": 30,
+      "novel_sentences": 12,
+      "rejected_sentences": 18
+    },
+    {
+      "source_file": "text/2026-10-27/2005ee-5.txt",
+      "total_sentences": 26,
+      "novel_sentences": 8,
+      "rejected_sentences": 18
+    },
+    {
+      "source_file": "text/2026-10-27/2205ee-2.txt",
+      "total_sentences": 28,
+      "novel_sentences": 15,
+      "rejected_sentences": 13
+    },
+    {
+      "source_file": "text/2026-10-27/English-2305-2310-21.txt",
+      "total_sentences": 23,
+      "novel_sentences": 9,
+      "rejected_sentences": 14
+    },
+    {
+      "source_file": "text/2026-10-27/MidDay-News-English.txt",
+      "total_sentences": 104,
+      "novel_sentences": 57,
+      "rejected_sentences": 47
+    },
+    {
+      "source_file": "text/2026-10-27/News-At-Nine-2.txt",
+      "total_sentences": 98,
+      "novel_sentences": 55,
+      "rejected_sentences": 43
+    }
+  ],
+  "top_rejected_pairs": [
+    {
+      "rejected_text": "It encourages citizens to hoist the national flag and take part in activities that celebrate the spirit of patriotism and unity.",
+      "matched_text": "It encourages citizens to hoist the national flag and take part in activities that celebrate the spirit of patriotism and unity.",
+      "cosine_score": 1.0,
+      "matched_source_idx": 3
+    },
+    {
+      "rejected_text": "During the interaction, the medal winners shared their experiences from the Games with the Prime Minister.",
+      "matched_text": "During the interaction, the medal winners shared their experiences from the Games with the Prime Minister.",
+      "cosine_score": 1.0,
+      "matched_source_idx": 11
+    },
+    {
+      "rejected_text": "In a social media post, Mr Modi said that each one of them has made the nation proud through their exceptional performances and their success will motivate many youngsters.",
+      "matched_text": "In a social media post, Mr Modi said that each one of them has made the nation proud through their exceptional performances and their success will motivate many youngsters.",
+      "cosine_score": 1.0,
+      "matched_source_idx": 12
+    },
+    {
+      "rejected_text": "The Jharkhand government has reached an agreement on most of the demands of students protesting against alleged irregularities in JPSC and JSSC examinations.",
+      "matched_text": "The Jharkhand government has reached an agreement on most of the demands of students protesting against alleged irregularities in JPSC and JSSC examinations.",
+      "cosine_score": 1.0,
+      "matched_source_idx": 17
+    },
+    {
+      "rejected_text": "The students said their agitation would continue.",
+      "matched_text": "The students said their agitation would continue.",
+      "cosine_score": 1.0,
+      "matched_source_idx": 21
+    },
+    {
+      "rejected_text": "And that is the end of this news bulletin.",
+      "matched_text": "And that is the end of this news bulletin.",
+      "cosine_score": 1.0,
+      "matched_source_idx": 28
+    },
+    {
+      "rejected_text": "It encourages citizens to hoist the national flag and take part in activities that celebrate the spirit of patriotism and unity.",
+      "matched_text": "It encourages citizens to hoist the national flag and take part in activities that celebrate the spirit of patriotism and unity.",
+      "cosine_score": 1.0,
+      "matched_source_idx": 3
+    },
+    {
+      "rejected_text": "During the interaction, the medal winners shared their experiences from the Games with the Prime Minister.",
+      "matched_text": "During the interaction, the medal winners shared their experiences from the Games with the Prime Minister.",
+      "cosine_score": 1.0,
+      "matched_source_idx": 11
+    },
+    {
+      "rejected_text": "India finished at the fourth spot on the medal table at the Games held in Glasgow, Scotland.",
+      "matched_text": "India finished at the fourth spot on the medal table at the Games held in Glasgow, Scotland.",
+      "cosine_score": 1.0,
+      "matched_source_idx": 70
+    },
+    {
+      "rejected_text": "The Jharkhand government has reached an agreement on most of the demands of students protesting against alleged irregularities in JPSC and JSSC examinations.",
+      "matched_text": "The Jharkhand government has reached an agreement on most of the demands of students protesting against alleged irregularities in JPSC and JSSC examinations.",
+      "cosine_score": 1.0,
+      "matched_source_idx": 17
+    },
+    {
+      "rejected_text": "And that is the end of this news bulletin.",
+      "matched_text": "And that is the end of this news bulletin.",
+      "cosine_score": 1.0,
+      "matched_source_idx": 28
+    },
+    {
+      "rejected_text": "In a social media post, Mr Modi said that each one of them has made the nation proud through their exceptional performances and their success will motivate many youngsters.",
+      "matched_text": "In a social media post, Mr Modi said that each one of them has made the nation proud through their exceptional performances and their success will motivate many youngsters.",
+      "cosine_score": 1.0,
+      "matched_source_idx": 12
+    },
+    {
+      "rejected_text": "India finished at the fourth spot on the medal table at the Games held in Glasgow, Scotland.",
+      "matched_text": "India finished at the fourth spot on the medal table at the Games held in Glasgow, Scotland.",
+      "cosine_score": 1.0,
+      "matched_source_idx": 70
+    },
+    {
+      "rejected_text": "Of these, more than 1 crore houses have been completed and handed over to beneficiaries across the country with around 1 crore of the houses allotted to women.",
+      "matched_text": "Of these, more than 1 crore houses have been completed and handed over to beneficiaries across the country with around 1 crore of the houses allotted to women.",
+      "cosine_score": 1.0,
+      "matched_source_idx": 24
+    },
+    {
+      "rejected_text": "The Defence Ministry said the bilateral exercise aims to enhance interoperability and strengthen professional cooperation between the specialist diving and EOD teams of the two navies.",
+      "matched_text": "The Defence Ministry said the bilateral exercise aims to enhance interoperability and strengthen professional cooperation between the specialist diving and EOD teams of the two navies.",
+      "cosine_score": 1.0,
+      "matched_source_idx": 77
+    },
+    {
+      "rejected_text": "And that is the end of this news bulletin.",
+      "matched_text": "And that is the end of this news bulletin.",
+      "cosine_score": 1.0,
+      "matched_source_idx": 28
+    },
+    {
+      "rejected_text": "It encourages citizens to hoist the national flag and take part in activities that celebrate the spirit of patriotism and unity.",
+      "matched_text": "It encourages citizens to hoist the national flag and take part in activities that celebrate the spirit of patriotism and unity.",
+      "cosine_score": 1.0,
+      "matched_source_idx": 3
+    },
+    {
+      "rejected_text": "Citizens are being encouraged to hoist the national flag at their homes.",
+      "matched_text": "Citizens are being encouraged to hoist the national flag at their homes.",
+      "cosine_score": 1.0,
+      "matched_source_idx": 86
+    },
+    {
+      "rejected_text": "He urged people to identify themselves as Indians first and Manipuris later, saying that peace in the state would be difficult to achieve if people continue to identify themselves mainly along ethnic lines.",
+      "matched_text": "He urged people to identify themselves as Indians first and Manipuris later, saying that peace in the state would be difficult to achieve if people continue to identify themselves mainly along ethnic lines.",
+      "cosine_score": 1.0,
+      "matched_source_idx": 88
+    },
+    {
+      "rejected_text": "During the interaction, the medal winners shared their experiences from the Games with the Prime Minister.",
+      "matched_text": "During the interaction, the medal winners shared their experiences from the Games with the Prime Minister.",
+      "cosine_score": 1.0,
+      "matched_source_idx": 11
+    }
+  ]
+}

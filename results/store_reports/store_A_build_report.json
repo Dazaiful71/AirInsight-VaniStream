@@ -1,0 +1,97 @@
+{
+  "store_dir": "store_A",
+  "threshold": 0.85,
+  "classifier_backend": "fast",
+  "seconds": 978.2,
+  "segments_in_store": 4264,
+  "sentences_before_gate": {
+    "train": 5560,
+    "val": 1981,
+    "test": 1978,
+    "all": 9519
+  },
+  "sentences_after_gate": {
+    "train": 2520,
+    "val": 879,
+    "test": 865,
+    "all": 4264
+  },
+  "segments_by_split_in_db": {
+    "test": 865,
+    "train": 2520,
+    "val": 879
+  },
+  "null_hour_segments_by_split": {
+    "test": 151,
+    "train": 479,
+    "val": 80
+  },
+  "null_hour_total": 710,
+  "null_hour_flags": {
+    "no_time_in_filename": 710
+  },
+  "segments_with_hour_outside_0_23": 0,
+  "segments_per_hour": {
+    "0": 299,
+    "1": 304,
+    "2": 84,
+    "3": 150,
+    "4": 36,
+    "5": 74,
+    "6": 143,
+    "7": 95,
+    "8": 628,
+    "9": 93,
+    "10": 84,
+    "11": 98,
+    "12": 82,
+    "13": 29,
+    "14": 141,
+    "15": 114,
+    "16": 185,
+    "17": 127,
+    "18": 156,
+    "19": 95,
+    "20": 110,
+    "21": 226,
+    "22": 134,
+    "23": 67
+  },
+  "days_per_split": {
+    "test": [
+      "2026-08-28",
+      "2026-09-06"
+    ],
+    "train": [
+      "2026-08-10",
+      "2026-09-03",
+      "2026-09-30",
+      "2026-10-19",
+      "2026-10-21",
+      "2026-10-27"
+    ],
+    "val": [
+      "2026-08-16",
+      "2026-10-24"
+    ]
+  },
+  "genre_counts_SILVER": {
+    "Other": 1601,
+    "International": 705,
+    "Society & Culture": 479,
+    "Defence & Security": 378,
+    "Sports": 306,
+    "Politics": 226,
+    "Economy": 192,
+    "Environment": 141,
+    "Science & Technology": 126,
+    "Health": 110
+  },
+  "dedup_totals": {
+    "total_sentences": 9519,
+    "novel_sentences": 4264,
+    "rejected_sentences": 5255,
+    "reduction_pct": 55.2
+  },
+  "note_seconds": "wall time of THIS invocation only; a resumed run counts only the remaining files"
+}
