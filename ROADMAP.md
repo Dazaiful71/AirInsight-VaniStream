@@ -434,6 +434,28 @@ All files are in `data/gold/` (see its `README.md`); script `data/gold/build_gol
 
 ---
 
+## 8e. Ablation store and ASR hypotheses (31 Oct 2026)
+
+**`store_A_nodedup` built** (`build_store_A.py --no-gate --store-dir store_A_nodedup --classifier fast --reindex`, CPU, gate threshold 1.01 so nothing is rejected). MEASURED: 9,519 segments (train 5,560 / val 1,981 / test 1,978), 0 rejected, 1,547 with NULL hour, 1,856 s (30.9 min) in one run; it takes longer than `store_A` (16.3 min) because all 9,519 sentences are classified. `store_A/` was not written to: the SHA-256 of all six files in it is identical before and after (checked). The retrieval ablation `--no-dedup` can now run, but NO ablation has been run. The silver genre column of this store comes from the fast backend, like `store_A`.
+
+**Whisper tiny and base hypotheses cached** in `data/asr_hyp/<model>/<stem>.txt` for the 5 WER bulletins (3 hourly, Morning, Midday; all from option A test days), through `eval/asr_transcribe.py`, GPU, float16. `small` is the option A transcript (RTF 0.0568 over the whole sample). Per-file timing and VRAM are logged in `data/asr_hyp/transcribe_log.json` (not committed). MEASURED, one run on the RTX 2050; the first file of each model run includes model load or warm-up:
+
+| Bulletin | Audio (s) | tiny: time (s) / RTF | base: time (s) / RTF |
+|---|---|---|---|
+| English-0105-0110-9 (hourly night) | 287.45 | 6.45 / 0.0224 | 7.18 / 0.0250 |
+| English-1505 (hourly day) | 283.56 | 5.69 / 0.0201 | 7.76 / 0.0274 |
+| English-1905-1 (hourly evening) | 283.34 | 5.47 / 0.0193 | 8.09 / 0.0286 |
+| morninng (Morning News) | 883.87 | 17.39 / 0.0197 | 25.43 / 0.0288 |
+| Midday-News (Midday News) | 870.70 | 17.20 / 0.0198 | 26.49 / 0.0304 |
+
+GPU memory (total in use, nvidia-smi sampled every 0.5 s, not process-only): tiny run peak 241 MiB (baseline 0 MiB); base run peak 473 MiB with the tiny model still resident (baseline 209 MiB), so base alone added roughly 260 MiB (an estimate from the difference, UNVERIFIED). Only five files, one run each; speeds may differ on other bulletins or the cluster. Transcription quality was NOT checked and no WER was computed (no references exist). Word counts of the 1505 bulletin: tiny 644, base 637, small 636.
+
+**Reference files to create by hand** in `data/gold/asr_refs/` (the folder exists and is EMPTY; one hand-corrected `.txt` per bulletin, corrected by a person from the audio, never copied from a Whisper output): `English-0105-0110-9.txt`, `English-1505.txt`, `English-1905-1.txt`, `morninng.txt`, `Midday-News.txt`. Git does not track the empty folder.
+
+**Still open:** ablations not run; no fine-tuned checkpoint; cluster headers not compared with the real `gpu_single` template (UNVERIFIED); eval code untested on real labels.
+
+---
+
 ## 9. Member B tasks (communication and admin)
 
 These are for a human to do. Nothing here has been sent or done.

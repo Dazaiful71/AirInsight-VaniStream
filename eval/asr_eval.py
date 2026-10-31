@@ -117,17 +117,22 @@ def default_hyp_loader(paths, model, cand):
     return transcribe_cached(audio, model, f)
 
 
-def transcribe_cached(audio_path: str, model: str, cache_file: str, device: str = "auto") -> str:
+def transcribe_cached(audio_path: str, model: str, cache_file: str, device: str = "auto", stats: dict = None) -> str:
     """Whisper hypothesis for one audio file, cached in cache_file (non-empty cache = no transcription, no model load).
 
     Same engine and settings as the option A run (faster-whisper, VAD default off); device auto = cuda + float16 when usable.
+    If a dict is passed as `stats` it receives duration_s, seconds, rtf, device and compute_type (only when a transcription ran).
     """
     if os.path.isfile(cache_file) and os.path.getsize(cache_file) > 0:
         return open(cache_file, encoding="utf-8").read()
     sys.path.insert(0, cfg.ROOT)
     import air_bulletins_scraper as scraper
     dev, compute = scraper.resolve_device("faster-whisper", device, None)
-    text = scraper.transcribe_with_stats(audio_path, "faster-whisper", model, dev, compute)["text"]
+    out = scraper.transcribe_with_stats(audio_path, "faster-whisper", model, dev, compute)
+    text = out["text"]
+    if stats is not None:
+        stats.update({"duration_s": out.get("duration_s"), "seconds": out.get("seconds"), "rtf": out.get("rtf"),
+                      "device": dev, "compute_type": compute})
     os.makedirs(os.path.dirname(cache_file) or ".", exist_ok=True)
     with open(cache_file, "w", encoding="utf-8") as h:
         h.write(text)

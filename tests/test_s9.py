@@ -391,3 +391,24 @@ def test_sbatch_script_has_required_directives_smoke_mode_and_unix_line_endings(
     bash = shutil.which("bash")
     if bash:
         assert subprocess.run([bash, "-n", os.path.join(ROOT, "cluster", name)], capture_output=True).returncode == 0
+
+
+def test_transcribe_cached_reports_stats_only_when_it_transcribes(tmp_path, monkeypatch):
+    fake = types.SimpleNamespace(resolve_device=lambda t, d, c: ("cuda", "float16"),
+                                 transcribe_with_stats=lambda *a: {"text": "x y z", "duration_s": 10.0, "seconds": 0.5, "rtf": 0.05})
+    monkeypatch.setitem(sys.modules, "air_bulletins_scraper", fake)
+    cache = str(tmp_path / "h" / "tiny" / "a.txt")
+    st = {}
+    asr_eval.transcribe_cached("a.mp3", "tiny", cache, stats=st)
+    assert st == {"duration_s": 10.0, "seconds": 0.5, "rtf": 0.05, "device": "cuda", "compute_type": "float16"}
+    st2 = {}
+    asr_eval.transcribe_cached("a.mp3", "tiny", cache, stats=st2)
+    assert st2 == {}                                    # served from the cache: nothing was transcribed
+
+
+def test_vram_sampler_handles_missing_nvidia_smi(monkeypatch):
+    import asr_transcribe
+    monkeypatch.setattr(asr_transcribe, "gpu_used_mib", lambda: None)
+    with asr_transcribe.VramSampler(interval=0.01) as v:
+        pass
+    assert v.peak is None and v.baseline is None

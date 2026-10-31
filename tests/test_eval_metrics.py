@@ -451,4 +451,5 @@ def test_real_gold_files_are_untouched_and_still_unlabelled():
     for name in ("genre_eval", "dedup_eval", "retrieval_eval", "asr_eval"):
         mod = sys.modules[name]
         assert mod.gold_status().ok is False, name
-    assert not os.path.isdir(cfg.GOLD_ASR_DIR)
+    # the (empty) reference folder may exist, but no reference text may have been written for the user
+    assert not os.path.isdir(cfg.GOLD_ASR_DIR) or not [f for f in os.listdir(cfg.GOLD_ASR_DIR) if f.endswith('.txt')]
