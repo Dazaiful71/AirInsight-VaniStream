@@ -1,0 +1,72 @@
+flowchart TB
+    subgraph R1["INGEST  (data flows left to right)"]
+        direction LR
+        subgraph S1["Sources"]
+            direction TB
+            WEB["newsonair.gov.in<br/>archive bulletins"]
+            LIVE["Live radio<br/>Icecast / HLS"]
+        end
+        subgraph S2["Capture + ASR"]
+            direction TB
+            SCR["air_bulletins_scraper<br/>download, SHA-256, Whisper"]
+            LSM["live_stream_ingest<br/>ffmpeg 30s/5s chunks<br/>faster-whisper + VAD"]
+        end
+        subgraph S3["Files  output/"]
+            direction TB
+            FILES[("audio/*.mp3<br/>text/*.txt")]
+            META[("metadata.csv")]
+            ING["ingest_pipeline<br/>batch + dedup_report.json"]
+        end
+        subgraph S4["NLP  nlp_pipeline"]
+            direction TB
+            SEG["NLTK sentences"]
+            EMB["MiniLM-L6 384-d"]
+            MMR{"MMR gate<br/>cos >= 0.85?"}
+            CLS["Genre x10<br/>zero-shot / fast / fine-tuned"]
+            SEG --> EMB --> MMR -->|novel| CLS
+        end
+        S1 --> S2 --> S3 --> S4
+    end
+
+    subgraph R2["STORE + SERVE  (requests flow left to right)"]
+        direction LR
+        subgraph S7["Serve"]
+            direction TB
+            UI["Web SPA<br/>chat, timeline, audio"]
+            API["FastAPI :8000<br/>/chat /timeline /audio<br/>/stats /dedup /stream/*"]
+            UI <--> API
+        end
+        subgraph S6["RAG  rag_engine"]
+            direction TB
+            QP["Parse date + genre"]
+            PRE["Tier 1: SQL prefilter"]
+            SS["Tier 2: FAISS search"]
+            REL["Relevance filter"]
+            GEN{"Gemini live?"}
+            QP --> PRE --> SS --> REL --> GEN
+        end
+        subgraph S5["Store  vector_store"]
+            direction TB
+            FAISS[("FAISS<br/>IndexFlatIP")]
+            SQL[("SQLite<br/>segments")]
+        end
+        S7 --> S6 --> S5
+    end
+
+    GEM["Gemini 1.5 Flash<br/>or extractive fallback"]
+
+    subgraph OFF["OFFLINE TRAINING"]
+        direction LR
+        BLD["build_genre_<br/>training_data"] --> TRN["train_genre_<br/>classifier"] --> MDL[("models/<br/>DistilBERT")] --> EVL["eval_genre"]
+    end
+
+    LSM -->|real-time| SEG
+    ING --> SEG
+    CLS --> FAISS
+    CLS --> SQL
+    FAISS -.->|existing vectors| MMR
+    API -->|start/stop| LSM
+    API -.->|audio by faiss_id| FILES
+    GEN <--> GEM
+    SQL --> BLD
+    MDL -.->|finetuned| CLS

@@ -1,0 +1,32 @@
+{
+  "rule": {
+    "rule": "every_nth_day",
+    "n": 5,
+    "start_offset_days": 0,
+    "seed": 42,
+    "language": "english",
+    "category": "all",
+    "notes": "Deterministic sampling for the pilot corpus. 'every_nth_day' takes the 1st day of the range (plus start_offset_days) and then every n-th day after it, and downloads ALL bulletins of those days. The alternative rule 'random_days' (needs 'k' and uses 'seed') picks k days with random.Random(seed). The seed is saved in the sample plan even when the rule does not use it."
+  },
+  "seed": 42,
+  "range": [
+    "2026-10-19",
+    "2026-10-25"
+  ],
+  "language": "english",
+  "category": "all",
+  "chosen_days": [
+    "2026-10-19",
+    "2026-10-24"
+  ],
+  "items_per_day": {
+    "2026-10-19": 25,
+    "2026-10-24": 24
+  },
+  "total_items": 49,
+  "estimated_known_minutes": 165,
+  "items_without_duration_estimate": 20,
+  "limit": 2,
+  "out_dir": "data/s1_test_out",
+  "created_utc": "2026-10-31T09:44:15Z"
+}

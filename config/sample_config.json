@@ -1,0 +1,235 @@
+{
+  "rule": "every_nth_day",
+  "n": 5,
+  "start_offset_days": 0,
+  "seed": 42,
+  "language": "english",
+  "category": "all",
+  "notes": "Deterministic sampling for the pilot corpus. 'every_nth_day' takes the 1st day of the range (plus start_offset_days) and then every n-th day after it, and downloads ALL bulletins of those days. The alternative rule 'random_days' (needs 'k' and uses 'seed') picks k days with random.Random(seed). The seed is saved in the sample plan even when the rule does not use it.",
+  "pilot_plan_s4": {
+    "status": "PROPOSED, OPTION NOT CHOSEN YET. Nothing has been downloaded for this plan. air_bulletins_scraper.py --sample does not read this block yet (it only reads the older rule fields above); a later step must add an explicit-days mode.",
+    "source": "data/metadata_3month_english.csv (S3d listing, 2,173 rows)",
+    "seed": 42,
+    "exclusions": {
+      "31 Oct 2026": "incomplete day (16 items when crawled)",
+      "non_english_items": "4 items titled Hindi/Urdu removed from the English pool",
+      "rows_after_exclusions": 2153,
+      "pool_days": "2026-08-01 .. 2026-10-30 (91 days)"
+    },
+    "rule": [
+      "Pool = the 91 complete days 2026-08-01..2026-10-30.",
+      "Strata = month (Aug, Sep, Oct) x {weekday, weekend}. Option B quotas: weekend 2 per month; weekdays Aug 6, Sep 5, Oct 5 (22 days).",
+      "Strata are visited in order (month ascending, weekday before weekend). Within a stratum days are shuffled with random.Random(42) and accepted if no two chosen days are consecutive calendar days (|gap| >= 2), which limits story overlap between splits.",
+      "Option A is nested inside option B: the first k days drawn per stratum (weekend 1 per month; weekdays Aug 2, Sep 2, Oct 3 = 10 days). Extending A to B never changes A's days or A's split.",
+      "Split by WHOLE DAYS only. A: 6 train / 2 val / 2 test, shuffled with random.Random(42) until test has >=1 weekend day, >=1 weekday and 2 different months, and val spans >=2 months. B keeps A's assignment and adds 12 days (8 train, 2 val, 2 test) under the same seeded rejection rule (test must cover all 3 months with a weekend and a weekday). The explicit day lists below are the source of truth and must not be re-drawn.",
+      "Duplicate-slot pairs (two different audio files, same date and same parsed HHMM) are not a selection criterion; checked after selection: A has 8 of 10 days with a pair, B has 19 of 22. Whether the two files of a pair have identical content is UNVERIFIED."
+    ],
+    "option_A_about_10_days": {
+      "days": [
+        "2026-08-10",
+        "2026-08-16",
+        "2026-08-28",
+        "2026-09-03",
+        "2026-09-06",
+        "2026-09-30",
+        "2026-10-19",
+        "2026-10-21",
+        "2026-10-24",
+        "2026-10-27"
+      ],
+      "summary": {
+        "days": 10,
+        "items": 239,
+        "hourly_items": 209,
+        "non_hourly_items": 30,
+        "duplicate_slot_pairs": 9,
+        "days_with_a_duplicate_slot_pair": 8,
+        "audio_minutes_central": 1441,
+        "audio_minutes_range": [
+          1291,
+          1591
+        ],
+        "audio_minutes_basis": "hourly items x 4.74 min (MEASURED on 2 files); non-hourly items x 15 min (UNMEASURED assumption; range uses 10-20)",
+        "est_transcription_minutes": {
+          "gpu_small_float16_rtf_0.067": 97,
+          "gpu_base_float16_rtf_0.042": 61,
+          "cpu_base_int8_rtf_0.100": 144
+        },
+        "est_raw_sentences_before_dedup": 7002,
+        "est_download_minutes_UNMEASURED": [
+          6,
+          12
+        ]
+      },
+      "split": {
+        "train": {
+          "days": [
+            "2026-08-10",
+            "2026-09-03",
+            "2026-09-30",
+            "2026-10-19",
+            "2026-10-21",
+            "2026-10-27"
+          ],
+          "items": 144,
+          "duplicate_slot_pairs": 5
+        },
+        "val": {
+          "days": [
+            "2026-08-16",
+            "2026-10-24"
+          ],
+          "items": 48,
+          "duplicate_slot_pairs": 2
+        },
+        "test": {
+          "days": [
+            "2026-08-28",
+            "2026-09-06"
+          ],
+          "items": 47,
+          "duplicate_slot_pairs": 2
+        }
+      }
+    },
+    "option_B_about_22_days": {
+      "days": [
+        "2026-08-01",
+        "2026-08-07",
+        "2026-08-10",
+        "2026-08-14",
+        "2026-08-16",
+        "2026-08-21",
+        "2026-08-24",
+        "2026-08-28",
+        "2026-09-03",
+        "2026-09-06",
+        "2026-09-10",
+        "2026-09-13",
+        "2026-09-17",
+        "2026-09-28",
+        "2026-09-30",
+        "2026-10-03",
+        "2026-10-13",
+        "2026-10-19",
+        "2026-10-21",
+        "2026-10-24",
+        "2026-10-27",
+        "2026-10-29"
+      ],
+      "summary": {
+        "days": 22,
+        "items": 524,
+        "hourly_items": 458,
+        "non_hourly_items": 66,
+        "duplicate_slot_pairs": 29,
+        "days_with_a_duplicate_slot_pair": 19,
+        "audio_minutes_central": 3161,
+        "audio_minutes_range": [
+          2831,
+          3491
+        ],
+        "audio_minutes_basis": "hourly items x 4.74 min (MEASURED on 2 files); non-hourly items x 15 min (UNMEASURED assumption; range uses 10-20)",
+        "est_transcription_minutes": {
+          "gpu_small_float16_rtf_0.067": 212,
+          "gpu_base_float16_rtf_0.042": 133,
+          "cpu_base_int8_rtf_0.100": 316
+        },
+        "est_raw_sentences_before_dedup": 15343,
+        "est_download_minutes_UNMEASURED": [
+          13,
+          26
+        ]
+      },
+      "split": {
+        "train": {
+          "days": [
+            "2026-08-07",
+            "2026-08-10",
+            "2026-08-14",
+            "2026-08-24",
+            "2026-09-03",
+            "2026-09-10",
+            "2026-09-13",
+            "2026-09-17",
+            "2026-09-28",
+            "2026-09-30",
+            "2026-10-03",
+            "2026-10-19",
+            "2026-10-21",
+            "2026-10-27"
+          ],
+          "items": 334,
+          "duplicate_slot_pairs": 17
+        },
+        "val": {
+          "days": [
+            "2026-08-01",
+            "2026-08-16",
+            "2026-10-24",
+            "2026-10-29"
+          ],
+          "items": 95,
+          "duplicate_slot_pairs": 6
+        },
+        "test": {
+          "days": [
+            "2026-08-21",
+            "2026-08-28",
+            "2026-09-06",
+            "2026-10-13"
+          ],
+          "items": 95,
+          "duplicate_slot_pairs": 6
+        }
+      }
+    },
+    "asr_wer_candidates_from_option_A_test_days": [
+      {
+        "role": "Hourly night",
+        "date": "2026-09-06",
+        "file": "English-0105-0110-9.mp3",
+        "title": "Hourly News"
+      },
+      {
+        "role": "Hourly daytime",
+        "date": "2026-08-28",
+        "file": "English-1505.mp3",
+        "title": "Hourly News"
+      },
+      {
+        "role": "Hourly evening",
+        "date": "2026-09-06",
+        "file": "English-1905-1.mp3",
+        "title": "Hourly News"
+      },
+      {
+        "role": "Morning News",
+        "date": "2026-09-06",
+        "file": "morninng.mp3",
+        "title": "Morning News"
+      },
+      {
+        "role": "Midday News",
+        "date": "2026-08-28",
+        "file": "Midday-News.mp3",
+        "title": "Midday News"
+      }
+    ],
+    "asr_models_to_compare_on_laptop_rtx2050_4gb": [
+      "tiny",
+      "base",
+      "small",
+      "medium (test with ONE file first; fit in 4 GB is UNVERIFIED)"
+    ],
+    "asr_models_for_cluster_later": [
+      "large-v3 and other larger runs on the A6000; speed there is unmeasured"
+    ],
+    "measured_inputs": {
+      "rtf_gpu_base_float16": 0.042,
+      "rtf_gpu_small_float16": 0.067,
+      "rtf_cpu_base_int8": 0.1,
+      "note": "2 hourly files only (about 9.5 min of audio); first file includes warm-up. Download speed UNMEASURED (about 3 s between two downloads in one test, including the 1-3 s politeness delay)."
+    }
+  }
+}

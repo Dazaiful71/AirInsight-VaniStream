@@ -1,0 +1,456 @@
+"""
+nlp_pipeline.py - NLP Pipeline for AIR Broadcast News Intelligence System (Phase 1)
+
+Takes a transcript .txt file and produces classified, deduplicated, embedded
+segments ready for FAISS indexing.
+
+CLI usage:
+  python nlp_pipeline.py --transcript output/text/2026-05-01/file.txt --date 2026-05-01 --hour 8
+  python nlp_pipeline.py --transcript ... --fast --mmr-threshold 0.90
+  python nlp_pipeline.py --transcript ... --classifier finetuned
+
+Classifier backends:
+  zero-shot  : facebook/bart-large-mnli (default, highest quality zero-shot)
+  fast       : cross-encoder/nli-MiniLM2-L6-H768 (lighter, --fast flag)
+  finetuned  : models/air-genre-classifier/ (DistilBERT fine-tuned on AIR corpus);
+               falls back to 'fast' with a WARNING if checkpoint not present.
+"""
+
+import argparse
+import json
+import logging
+import os
+import sys
+from typing import Optional
+
+import nltk
+import numpy as np
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(name)s - %(message)s",
+)
+logger = logging.getLogger("nlp_pipeline")
+
+try:
+    nltk.data.find("tokenizers/punkt_tab")
+except LookupError:
+    logger.info("Downloading NLTK punkt_tab tokenizer data...")
+    nltk.download("punkt_tab", quiet=True)
+
+GENRE_LABELS = [
+    "Politics", "Economy", "Science & Technology", "Sports",
+    "International", "Defence & Security", "Health",
+    "Environment", "Society & Culture", "Other",
+]
+
+DEFAULT_CLASSIFIER_MODEL = "facebook/bart-large-mnli"
+FAST_CLASSIFIER_MODEL = "cross-encoder/nli-MiniLM2-L6-H768"
+EMBEDDING_MODEL = "all-MiniLM-L6-v2"
+FINETUNED_MODEL_PATH = os.path.join("models", "air-genre-classifier")
+DEFAULT_MMR_THRESHOLD = 0.85
+
+_classifier_pipeline = None
+_embedding_model = None
+_finetuned_classifier: Optional[tuple] = None  # (model, tokenizer, id2label) or None
+
+
+def segment_sentences(text: str) -> list[str]:
+    """Split raw transcript text into individual sentences using NLTK."""
+    text = text.lstrip('\ufeff')
+    sentences = nltk.sent_tokenize(text)
+    return [s.strip() for s in sentences if s.strip()]
+
+
+def _classifier_device() -> int:
+    """GPU 0 when torch can see CUDA, else CPU (-1). Override with AIRINSIGHT_DEVICE=cpu|cuda."""
+    forced = os.environ.get("AIRINSIGHT_DEVICE", "").strip().lower()
+    if forced == "cpu":
+        return -1
+    try:
+        import torch
+        return 0 if torch.cuda.is_available() else -1
+    except Exception:
+        return -1
+
+
+def _get_classifier(fast: bool = False):
+    """Lazily load and cache one zero-shot pipeline PER MODEL (fast and BART no longer share one cache slot)."""
+    global _classifier_pipeline
+    model_name = FAST_CLASSIFIER_MODEL if fast else DEFAULT_CLASSIFIER_MODEL
+    if _classifier_pipeline is not None and _classifier_pipeline[0] == model_name:
+        return _classifier_pipeline[1]
+    from transformers import pipeline as hf_pipeline
+    device = _classifier_device()
+    logger.info("Loading zero-shot classifier: %s (device=%s)", model_name, "cuda:0" if device == 0 else "cpu")
+    _classifier_pipeline = (model_name, hf_pipeline("zero-shot-classification", model=model_name, device=device))
+    return _classifier_pipeline[1]
+
+
+def classify_genre(sentence: str, fast: bool = False) -> tuple[str, float]:
+    """Classify a single sentence into one of the predefined genre labels."""
+    classifier = _get_classifier(fast=fast)
+    result = classifier(sentence, candidate_labels=GENRE_LABELS)
+    return result["labels"][0], float(result["scores"][0])
+
+
+def classify_genres_batch(sentences: list[str], fast: bool = False) -> list[tuple[str, float]]:
+    """Batch-classify sentences for better throughput."""
+    if not sentences:
+        return []
+    classifier = _get_classifier(fast=fast)
+    results = classifier(sentences, candidate_labels=GENRE_LABELS, batch_size=8)
+    if isinstance(results, dict):
+        results = [results]
+    return [(r["labels"][0], float(r["scores"][0])) for r in results]
+
+
+# ---------------------------------------------------------------------------
+# Fine-tuned classifier backend
+# ---------------------------------------------------------------------------
+
+def _get_finetuned_classifier() -> Optional[tuple]:
+    """Lazily load the fine-tuned genre classifier from FINETUNED_MODEL_PATH.
+
+    Returns (model, tokenizer, id2label) if the checkpoint exists, or None
+    if the checkpoint is missing (caller must fallback to zero-shot).
+    This mirrors the _probe_gemini() graceful-degradation pattern in rag_engine.py.
+    """
+    global _finetuned_classifier
+    if _finetuned_classifier is not None:
+        return _finetuned_classifier
+
+    if not os.path.isdir(FINETUNED_MODEL_PATH):
+        logger.warning(
+            "Fine-tuned model not found at '%s'. "
+            "Run 'python train_genre_classifier.py' to create it. "
+            "Falling back to zero-shot fast classifier.",
+            FINETUNED_MODEL_PATH,
+        )
+        return None
+
+    try:
+        import json
+        import torch
+        from transformers import AutoTokenizer, AutoModelForSequenceClassification
+
+        logger.info("Loading fine-tuned classifier from %s", FINETUNED_MODEL_PATH)
+        tokenizer = AutoTokenizer.from_pretrained(FINETUNED_MODEL_PATH)
+        model = AutoModelForSequenceClassification.from_pretrained(FINETUNED_MODEL_PATH)
+        model.eval()
+
+        # Load id2label from saved label_map.json (authoritative) or model config
+        label_map_path = os.path.join(FINETUNED_MODEL_PATH, "label_map.json")
+        if os.path.isfile(label_map_path):
+            with open(label_map_path, "r") as f:
+                data = json.load(f)
+            id2label = {int(k): v for k, v in data["id2label"].items()}
+        else:
+            id2label = {int(k): v for k, v in model.config.id2label.items()}
+
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        model = model.to(device)
+        _finetuned_classifier = (model, tokenizer, id2label, device)
+        logger.info("Fine-tuned classifier loaded (%d classes)", len(id2label))
+        return _finetuned_classifier
+
+    except Exception as exc:  # noqa: BLE001
+        logger.warning(
+            "Failed to load fine-tuned classifier from '%s': %s. "
+            "Falling back to zero-shot fast classifier.",
+            FINETUNED_MODEL_PATH,
+            exc,
+        )
+        return None
+
+
+def classify_genres_batch_finetuned(
+    sentences: list[str],
+    max_len: int = 128,
+    batch_size: int = 32,
+) -> list[tuple[str, float]]:
+    """Classify sentences using the fine-tuned DistilBERT model.
+
+    Returns the exact same ``list[tuple[str, float]]`` shape as
+    ``classify_genres_batch()`` so all downstream callers are unchanged.
+
+    If the fine-tuned model is unavailable, transparently falls back to the
+    zero-shot fast model and logs a WARNING — no exception is raised.
+    """
+    if not sentences:
+        return []
+
+    classifier = _get_finetuned_classifier()
+    if classifier is None:
+        # Graceful degradation: fall back to zero-shot fast
+        return classify_genres_batch(sentences, fast=True)
+
+    import torch
+    model, tokenizer, id2label, device = classifier
+
+    results: list[tuple[str, float]] = []
+    with torch.no_grad():
+        for start in range(0, len(sentences), batch_size):
+            batch = sentences[start: start + batch_size]
+            enc = tokenizer(
+                batch,
+                padding=True,
+                truncation=True,
+                max_length=max_len,
+                return_tensors="pt",
+            )
+            input_ids = enc["input_ids"].to(device)
+            attention_mask = enc["attention_mask"].to(device)
+            logits = model(input_ids=input_ids, attention_mask=attention_mask).logits
+            probs = torch.softmax(logits, dim=-1)
+            top_probs, top_ids = probs.max(dim=-1)
+            for pid, pconf in zip(top_ids.cpu().tolist(), top_probs.cpu().tolist()):
+                label = id2label.get(pid, GENRE_LABELS[-1])  # fallback to "Other"
+                results.append((label, float(pconf)))
+
+    return results
+
+
+def _get_embedding_model():
+    """Lazily load and cache the sentence-transformers embedding model."""
+    global _embedding_model
+    if _embedding_model is not None:
+        return _embedding_model
+    from sentence_transformers import SentenceTransformer
+    logger.info("Loading embedding model: %s", EMBEDDING_MODEL)
+    _embedding_model = SentenceTransformer(EMBEDDING_MODEL)
+    return _embedding_model
+
+
+def embed_sentences(sentences: list[str]) -> np.ndarray:
+    """Generate embeddings for a list of sentences. Returns shape (N, 384)."""
+    model = _get_embedding_model()
+    return model.encode(sentences, show_progress_bar=False, convert_to_numpy=True).astype(np.float32)
+
+
+def mmr_novelty_filter_detailed(
+    sentences: list[str],
+    embeddings: np.ndarray,
+    existing_embeddings: Optional[np.ndarray] = None,
+    existing_texts: Optional[list[str]] = None,
+    threshold: float = DEFAULT_MMR_THRESHOLD,
+) -> tuple[list[int], list[dict]]:
+    """MMR novelty gate: streaming cosine-similarity deduplication.
+
+    Returns:
+        (novel_indices, rejections)
+        where rejections is a list of dicts:
+        {"rejected_text": str, "matched_text": str, "cosine_score": float, "matched_source_idx": int}
+    """
+    norms = np.linalg.norm(embeddings, axis=1, keepdims=True)
+    norms = np.where(norms == 0, 1, norms)
+    normed = embeddings / norms
+
+    n_existing = 0 if existing_embeddings is None else len(existing_embeddings)
+    ex_normed = None
+    if n_existing > 0:
+        ex_norms = np.linalg.norm(existing_embeddings, axis=1, keepdims=True)
+        ex_norms = np.where(ex_norms == 0, 1, ex_norms)
+        ex_normed = existing_embeddings / ex_norms
+        if existing_texts and len(existing_texts) == n_existing:
+            pool_texts = list(existing_texts)
+        else:
+            pool_texts = [f"Existing segment #{idx+1}" for idx in range(n_existing)]
+    else:
+        pool_texts = []
+
+    # Preallocated pool: existing vectors first, accepted sentences appended in place (no per-sentence copy).
+    # Ties still resolve to the lowest pool index (np.argmax), as before.
+    dtype = normed.dtype if ex_normed is None else np.result_type(normed.dtype, ex_normed.dtype)
+    pool = np.empty((n_existing + len(normed), normed.shape[1] if normed.ndim == 2 else 0), dtype=dtype)
+    if n_existing > 0:
+        pool[:n_existing] = ex_normed
+    n_pool = n_existing
+
+    novel_indices: list[int] = []
+    rejections: list[dict] = []
+
+    for i in range(len(normed)):
+        if n_pool:
+            sims = pool[:n_pool] @ normed[i]
+            best_idx = int(np.argmax(sims))
+            max_sim = float(sims[best_idx])
+        else:
+            max_sim = -1.0
+            best_idx = -1
+
+        if max_sim >= threshold:
+            logger.debug("DUPLICATE (sim=%.3f): %s", max_sim, sentences[i][:80])
+            matched_str = pool_texts[best_idx] if 0 <= best_idx < len(pool_texts) else ""
+            rejections.append({
+                "rejected_text": sentences[i],
+                "matched_text": matched_str,
+                "cosine_score": round(max_sim, 4),
+                "matched_source_idx": best_idx,
+            })
+        else:
+            novel_indices.append(i)
+            pool[n_pool] = normed[i]
+            n_pool += 1
+            pool_texts.append(sentences[i])
+
+    return novel_indices, rejections
+
+
+def mmr_novelty_filter(
+    sentences: list[str],
+    embeddings: np.ndarray,
+    existing_embeddings: Optional[np.ndarray] = None,
+    threshold: float = DEFAULT_MMR_THRESHOLD,
+) -> list[int]:
+    """MMR novelty gate: streaming cosine-similarity deduplication.
+
+    Returns indices of novel (non-duplicate) sentences.
+    """
+    novel_indices, _ = mmr_novelty_filter_detailed(
+        sentences, embeddings, existing_embeddings, threshold=threshold
+    )
+    return novel_indices
+
+
+def process_transcript(
+    text: str,
+    existing_embeddings: Optional[np.ndarray] = None,
+    fast: bool = False,
+    mmr_threshold: float = DEFAULT_MMR_THRESHOLD,
+    detailed: bool = False,
+    existing_texts: Optional[list[str]] = None,
+    classifier: str = "zero-shot",
+    sentence_timestamps: Optional[list[tuple[Optional[float], Optional[float]]]] = None,
+):
+    """Run the full NLP pipeline on a transcript string.
+
+    Args:
+        text: Raw transcript text.
+        existing_embeddings: Embeddings already in FAISS for MMR dedup.
+        fast: If True, equivalent to classifier='fast' (backward compat).
+        mmr_threshold: Cosine similarity threshold for novelty gate.
+        detailed: If True, returns (segments, rejections).
+        existing_texts: Corresponding texts for existing_embeddings.
+        classifier: Backend selector — 'zero-shot' | 'fast' | 'finetuned'.
+                    If 'finetuned' and model missing, falls back to 'fast'.
+        sentence_timestamps: Optional list of (audio_start, audio_end) tuples matching
+                             segmented sentences in order.
+
+    Returns:
+        segments list, or (segments, rejections) when detailed=True.
+    """
+    # Backward compat: --fast flag maps to classifier='fast'
+    if fast and classifier == "zero-shot":
+        classifier = "fast"
+
+    sentences = segment_sentences(text)
+    logger.info("Segmented transcript into %d sentences", len(sentences))
+    if not sentences:
+        return ([], []) if detailed else []
+
+    embeddings = embed_sentences(sentences)
+    logger.info("Generated embeddings: shape %s", embeddings.shape)
+
+    novel_indices, rejections = mmr_novelty_filter_detailed(
+        sentences,
+        embeddings,
+        existing_embeddings=existing_embeddings,
+        existing_texts=existing_texts,
+        threshold=mmr_threshold,
+    )
+    logger.info("MMR filter: %d novel / %d total (threshold=%.2f)", len(novel_indices), len(sentences), mmr_threshold)
+    if not novel_indices:
+        return ([], rejections) if detailed else []
+
+    novel_sentences = [sentences[i] for i in novel_indices]
+    novel_embeddings = embeddings[novel_indices]
+    logger.info("Classifying %d novel sentences (backend=%s)...", len(novel_sentences), classifier)
+
+    if classifier == "finetuned":
+        genre_results = classify_genres_batch_finetuned(novel_sentences)
+    elif classifier == "fast":
+        genre_results = classify_genres_batch(novel_sentences, fast=True)
+    else:
+        # "zero-shot" default
+        genre_results = classify_genres_batch(novel_sentences, fast=False)
+
+    segments = []
+    for idx, (genre, confidence) in enumerate(genre_results):
+        orig_i = novel_indices[idx]
+        a_start, a_end = None, None
+        if sentence_timestamps and orig_i < len(sentence_timestamps):
+            a_start, a_end = sentence_timestamps[orig_i]
+
+        segments.append({
+            "text": novel_sentences[idx],
+            "genre": genre,
+            "genre_confidence": confidence,
+            "embedding": novel_embeddings[idx],
+            "audio_start": a_start,
+            "audio_end": a_end,
+        })
+    return (segments, rejections) if detailed else segments
+
+
+def main() -> int:
+    """CLI entry point for standalone pipeline execution."""
+    parser = argparse.ArgumentParser(description="NLP pipeline for AIR transcripts.")
+    parser.add_argument("--transcript", required=True, help="Path to transcript .txt file")
+    parser.add_argument("--date", required=True, help="Broadcast date YYYY-MM-DD")
+    parser.add_argument("--hour", required=True, type=int, help="Broadcast hour 0-23 (informational; not used by the pipeline)")
+    parser.add_argument("--fast", action="store_true",
+                        help="Use lighter classifier model (shorthand for --classifier fast)")
+    parser.add_argument(
+        "--classifier",
+        choices=["zero-shot", "fast", "finetuned"],
+        default="zero-shot",
+        help="Classifier backend: zero-shot (default), fast, or finetuned",
+    )
+    parser.add_argument("--mmr-threshold", type=float, default=DEFAULT_MMR_THRESHOLD,
+                        help=f"Cosine sim threshold for dedup (default {DEFAULT_MMR_THRESHOLD})")
+    args = parser.parse_args()
+
+    # --fast overrides --classifier for backward compat
+    classifier = args.classifier
+    if args.fast:
+        classifier = "fast"
+
+    if not os.path.isfile(args.transcript):
+        logger.error("Transcript file not found: %s", args.transcript)
+        return 1
+
+    with open(args.transcript, "r", encoding="utf-8") as f:
+        text = f.read()
+    if not text.strip():
+        logger.warning("Transcript is empty: %s", args.transcript)
+        return 0
+
+    existing_embeddings = None
+    try:
+        from vector_store import get_all_embeddings
+        existing_embeddings = get_all_embeddings()
+        if existing_embeddings is not None and len(existing_embeddings) > 0:
+            logger.info("Loaded %d existing embeddings for dedup", len(existing_embeddings))
+    except Exception:
+        logger.info("No existing FAISS index found - starting fresh")
+
+    segments = process_transcript(
+        text,
+        existing_embeddings=existing_embeddings,
+        fast=args.fast,
+        mmr_threshold=args.mmr_threshold,
+        classifier=classifier,
+    )
+    logger.info("Pipeline complete: %d novel segments produced", len(segments))
+    for seg in segments:
+        print(json.dumps({
+            "text": seg["text"], "genre": seg["genre"],
+            "genre_confidence": round(seg["genre_confidence"], 4),
+            "embedding_shape": list(seg["embedding"].shape),
+        }, ensure_ascii=False))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
