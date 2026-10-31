@@ -474,6 +474,14 @@ GPU memory (total in use, nvidia-smi sampled every 0.5 s, not process-only): tin
 
 ---
 
+## 8g. S10 - Paper skeleton (31 Oct 2026) - DONE
+
+`paper/draft.md` is a skeleton of the pilot paper with the sections Abstract (empty), Introduction, Related Work (headings only, no references), Data, System, Evaluation Protocol, Results (11 empty tables, each headed with the exact columns its eval fills and the result file that feeds it), Limitations, Ethics and licensing, Reproducibility. Rules followed: every number in the text is read from a saved file and the path sits in an HTML comment next to it; no result number, no claim of improvement; anything inferred is marked UNVERIFIED and anything unmeasured TODO. The annotation section states the LLM pre-labelling (Claude Sonnet 5.5, 2026-10-31, from `data/gold/llm/PROVENANCE.md`), the human review with placeholders for the number of corrections, the from-scratch human overlap, that agreement with the LLM is human-versus-LLM agreement and NOT inter-annotator kappa, that the LLM also built the sampling sheets, that ASR references are typed by a human from the audio, and that `Other` is inflated by boilerplate and accident stories.
+
+**Open items the skeleton exposes (all TODO):** the abstract, title, related work and citations; the number of human corrections; which column holds the from-scratch human labels, and that `genre_eval.py`'s annotator-1 versus annotator-2 kappa must not be reported as inter-annotator agreement unless a second human produced one column (UNVERIFIED); no script yet computes human-versus-LLM agreement (Table 4 has no source file); written genre definitions; the licensing answer from AIR; the final test count and commit hash at submission. Numbers taken from `store_A/` and `store_A_nodedup/` build reports are cited to files that are not committed.
+
+---
+
 ## 9. Member B tasks (communication and admin)
 
 These are for a human to do. Nothing here has been sent or done.
