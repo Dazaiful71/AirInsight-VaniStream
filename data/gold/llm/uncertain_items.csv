@@ -1,0 +1,99 @@
+﻿kind,id,llm_label,why_unsure
+genre_overlap,2026-08-28_English-2005-2010-6_s017,International,embassy helpline: International vs Society
+genre_overlap,2026-08-16_English-0605-0610-12_s007,Science & Technology,AI skilling for youth: Science & Technology vs Politics
+genre_overlap,2026-10-24_Morning-News-0815-0830-25_s063,International,no context (Nepal-related follow-up)
+genre_overlap,2026-08-16_English-0505-0510-13_s002,Society & Culture,Independence Day: Society & Culture vs Politics
+genre_overlap,2026-09-06_English-1905-1_s008,Defence & Security,drug destruction figures: Defence & Security vs Society
+genre_overlap,2026-08-16_English-0205-0210-14_s014,International,global flag relay by missions: International vs Society & Culture
+genre_overlap,2026-09-06_English-2205-1_s031,Society & Culture,drug-free youth speech: Society & Culture vs Health
+genre_overlap,2026-08-16_0905_s004,Society & Culture,women in policy-making: Society & Culture vs Politics
+genre_overlap,2026-08-16_Mid-Day-News-English-1400-1415-6_s054,Science & Technology,unclear event (Cyber Kushti)
+genre_overlap,2026-09-06_1605-2_s014,Society & Culture,PM at college centenary: Society & Culture vs Politics
+genre_overlap,2026-10-24_English-0105-0110-38_s013,Other,"building collapse: no accident genre, so Other"
+genre_overlap,2026-09-06_English-2305-2310-6_s010,Other,collapse rescue: Other (no accident genre)
+genre_overlap,2026-09-06_News-At-Nine_s010,Other,collapse: Other (no accident genre)
+genre_overlap,2026-09-06_1705-2_s028,International,military operation allegations: International vs Defence & Security
+genre_overlap,2026-10-24_2205ee-1_s025,Economy,rail inauguration: Economy vs Politics
+genre_overlap,2026-10-24_English-1905-1_s005,Other,no context
+genre_overlap,2026-08-16_2100-eng_s099,Other,no context
+genre_overlap,2026-09-06_2005eng_s010,Other,collapse rescue: Other
+genre_overlap,2026-08-16_eng1905-1_s013,Economy,tunnel opening: Economy vs Other
+genre_overlap,2026-09-06_English-0105-0110-9_s020,International,Nepal rescue: International vs Environment
+genre_overlap,2026-10-24_2205ee-1_s002,Economy,farmer IDs: Economy vs Politics
+genre_overlap,2026-08-28_Midday-News_s074,International,visit to the US: no context
+genre_overlap,2026-09-06_News-At-Nine_s068,Science & Technology,startups: Science & Technology vs Economy
+genre_overlap,2026-08-28_English-1105-1110-23_s004,International,Nepal evacuation: International vs Environment
+genre_overlap,2026-08-16_English-0605-0610-12_s009,International,Tiranga relay: International vs Society & Culture
+genre_overlap,2026-08-28_English-1605-1610-6_s014,Environment,Nepal river levels: Environment vs International
+genre_overlap,2026-08-16_0705-1_s007,Science & Technology,AI skilling: Science & Technology vs Politics
+genre_overlap,2026-09-06_English-0105-0110-8_s018,International,Nepal rescue helicopters: International vs Environment
+genre_overlap,2026-08-16_0705-1_s026,Sports,"two topics in one sentence (temple, cricket)"
+genre_overlap,2026-10-24_News-At-Nine-1_s008,Economy,farmer IDs: Economy vs Politics
+genre_overlap,2026-08-16_0905_s018,Economy,scheme not named in the sentence
+genre_overlap,2026-10-24_Mid-Day-English_s027,Health,seats (medical or education unclear): Health vs Society
+genre_overlap,2026-09-06_English-2205-1_s013,Other,collapse response by minister: Other vs Politics
+genre_overlap,2026-08-28_Morning-News-0815-0830-26_s098,International,"two topics in one headline (Nepal, Jan Dhan)"
+genre_overlap,2026-08-16_English-1005-1010-12_s020,Society & Culture,protest over unknown demands
+genre_overlap,2026-09-06_1605-2_s020,Other,collapse: Other (no accident genre)
+genre_overlap,2026-10-24_Mid-Day-English_s009,Economy,farmer IDs: Economy vs Politics
+genre_overlap,2026-08-16_English-0505-0510-13_s013,Economy,employment letters: Economy vs Politics
+genre_overlap,2026-09-06_English-1905-1_s029,Economy,OPEC meeting: Economy vs International
+genre_overlap,2026-10-24_English-1005-1010-23_s019,Other,no context
+genre_rest,2026-08-16_1305_s019,Society & Culture,exam-recruitment protest: Society & Culture vs Politics
+genre_rest,2026-08-16_1305_s020,Society & Culture,exam-recruitment protest: Society & Culture vs Politics
+genre_rest,2026-08-16_2100-eng_s062,Defence & Security,unclear case: Defence & Security vs Other
+genre_rest,2026-08-16_English-0005-0010-14_s021,International,foreign earthquake toll: International vs Environment
+genre_rest,2026-08-16_English-0205-0210-14_s011,International,thanks to world leaders: International vs Politics
+genre_rest,2026-08-16_English-1705-1710-7_s018,International,foreign disaster response: International vs Environment
+genre_rest,2026-08-16_Mid-Day-News-English-1400-1415-6_s080,Environment,BRICS environment ministers: Environment vs International
+genre_rest,2026-08-16_ee2205-1_s005,Economy,farmers welfare: Economy vs Politics
+genre_rest,2026-08-16_eng1905-1_s005,Economy,farmers welfare: Economy vs Politics
+genre_rest,2026-08-16_eng1905-1_s010,Health,vaccines to 100 countries: Health vs International
+genre_rest,2026-08-28_Midday-News_s052,Other,fact-check about a dam: Other vs Environment
+genre_rest,2026-09-06_1005_s025,Economy,"two topics (a death, I-BRICS summit)"
+genre_rest,2026-09-06_1705-2_s003,Politics,"press conference, topic not stated: Politics vs Other"
+genre_rest,2026-09-06_Eng-1505_s017,Other,illegal liquor deaths: Other vs Health
+genre_rest,2026-09-06_Eng-1505_s028,Other,building collapse: Other (no accident genre)
+genre_rest,2026-09-06_English-1805-1_s012,Society & Culture,drug-free youth speech: Society & Culture vs Defence & Security
+genre_rest,2026-09-06_English-1905-1_s018,Other,building collapse inquiry: Other
+genre_rest,2026-09-06_English-2205-1_s003,Other,collapse casualties: Other
+genre_rest,2026-09-06_Mid-Day-News-English-1400-1415_s015,Defence & Security,defence exports: Defence & Security vs Economy
+genre_rest,2026-09-06_Mid-Day-News-English-1400-1415_s034,Society & Culture,civic works: Society & Culture vs Other
+genre_rest,2026-09-06_Mid-Day-News-English-1400-1415_s044,Health,screening in villages: unclear (Health assumed)
+genre_rest,2026-09-06_News-At-Nine_s018,Other,collapse: Other
+genre_rest,2026-09-06_News-At-Nine_s020,Other,collapse rescue: Other
+genre_rest,2026-09-06_News-At-Nine_s097,Economy,oil export disruption: Economy vs International
+genre_rest,2026-09-06_News-At-Nine_s106,Other,collapse: Other
+genre_rest,2026-09-06_morninng_s058,Health,spurious drugs enforcement: Health vs Defence & Security
+genre_rest,2026-10-24_1505ee_s003,Economy,agriculture minister: Economy vs Politics
+genre_rest,2026-10-24_English-0105-0110-37_s007,Society & Culture,PM at a spiritual summit: Society & Culture vs Politics
+genre_rest,2026-10-24_English-0105-0110-38_s015,Other,fire accident: Other (no accident genre)
+genre_rest,2026-10-24_English-0505-0510-20_s013,Defence & Security,defence exports: Defence & Security vs Economy
+genre_rest,2026-10-24_English-0705-0710-26_s008,Defence & Security,ammunition exports: Defence & Security vs Economy
+genre_rest,2026-10-24_English-1005-1010-23_s023,Other,explosion victims: Other
+genre_rest,2026-10-24_English-1105-1110-22_s026,Other,collapse: Other
+genre_rest,2026-10-24_English-1205-1210-19_s016,Other,sentence cut off
+genre_rest,2026-10-24_Mid-Day-English_s019,Other,no context
+genre_rest,2026-10-24_Morning-News-0815-0830-25_s008,Environment,weather and sport in one headline
+genre_rest,2026-10-24_News-At-Nine-1_s004,Politics,Mann Ki Baat: Politics vs Society & Culture
+pair,P002,same,B adds where the speech was given: same vs paraphrase
+pair,P006,same,tiny wording difference (lost their lives / confirmed dead): same vs paraphrase
+pair,P011,paraphrase,boilerplate sign-off wording: paraphrase vs same
+pair,P016,same,"B is one clause of A, A has an extra fact: same vs follow-up"
+pair,P017,follow-up,"same relay story, different facts (concluded / launched from Fiji): follow-up vs different"
+pair,P018,follow-up,5 vs 35 hospitalised: updated figure (follow-up) or different count
+pair,P022,different,background (earlier visits) vs the upcoming visit: different vs follow-up
+pair,P027,follow-up,"same speech, different statement: follow-up vs different"
+pair,P029,different,"unrelated long item: different (clear), but B is about the same visit as other pairs"
+pair,P035,follow-up,unclear whether A refers to the same Shah programme: follow-up vs different
+pair,P037,follow-up,"same tunnel story, cost vs opening: follow-up vs different"
+pair,P039,follow-up,missing counts differ (separate or combined): follow-up vs same
+pair,P042,follow-up,two ministers at UN Day: follow-up vs different
+pair,P045,follow-up,same SBI story with extra detail: follow-up vs paraphrase
+pair,P048,follow-up,same target with added timing: follow-up vs paraphrase
+pair,P050,different,vague economy statements: different vs follow-up
+pair,P079,paraphrase,B is a fragment of A: paraphrase vs follow-up
+pair,P080,same,A is a shorter version of B: same vs paraphrase
+pair,P089,follow-up,two statements from one speech: follow-up vs different
+pair,P099,follow-up,"same visit, extra detail: follow-up vs paraphrase"
+pair,P100,follow-up,"same talks, sectors listed in A: follow-up vs paraphrase"

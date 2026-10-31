@@ -1,0 +1,81 @@
+﻿id,query_text,date_constraint,relevant_segment_ids,topic,status
+D001,What did the Prime Minister announce from the Red Fort?,2026-08-16,,Independence Day,DRAFT - select and edit
+D002,Which free coaching scheme did Modi announce for competitive exam aspirants?,2026-08-16,,education,DRAFT - select and edit
+D003,What AI skilling target was announced for youth?,2026-08-16,,technology,DRAFT - select and edit
+D004,How many people died in the Indonesia earthquake?,2026-08-16,,international disaster,DRAFT - select and edit
+D005,Why are JPSC and JSSC aspirants protesting in Jharkhand?,2026-08-16,,protest,DRAFT - select and edit
+D006,What is the Sungal tunnel and when did it open to the public?,2026-08-16,,infrastructure,DRAFT - select and edit
+D007,What was the dispute about Vande Mataram on Independence Day?,2026-08-16,,politics,DRAFT - select and edit
+D008,When does the BWF World Championships start and where is it held?,2026-08-16,,sports,DRAFT - select and edit
+D009,How did India fare against Sri Lanka in the first Test?,2026-08-16,,cricket,DRAFT - select and edit
+D010,What tributes were paid to Atal Bihari Vajpayee?,2026-08-16,,politics,DRAFT - select and edit
+D011,Which Odisha districts are on flood alert?,2026-08-16,,floods,DRAFT - select and edit
+D012,What is the Har Ghar Tiranga campaign?,2026-08-16,,culture,DRAFT - select and edit
+D013,When do the Onam celebrations begin in Kerala?,2026-08-16,,festival,DRAFT - select and edit
+D014,What state health insurance scheme was launched for people not covered by Ayushman Bharat?,2026-08-16,,health,DRAFT - select and edit
+D015,Which cyclone warning has been issued for Odisha and Andhra Pradesh?,2026-10-24,,weather,DRAFT - select and edit
+D016,How many medals did India win at the Asian Para Games?,2026-10-24,,sports,DRAFT - select and edit
+D017,What farmer ID target was achieved and how early?,2026-10-24,,agriculture,DRAFT - select and edit
+D018,What is the plan for a civil defence volunteer network?,2026-10-24,,defence,DRAFT - select and edit
+D019,What did the Defence Minister say at the Army Commanders Conference?,2026-10-24,,defence,DRAFT - select and edit
+D020,What measures are being taken against air pollution in Delhi NCR?,2026-10-24,,environment,DRAFT - select and edit
+D021,What did SBI say to customers after the cyber data leak?,2026-10-24,,banking,DRAFT - select and edit
+D022,What happened at the church shooting in Jordan?,2026-10-24,,international,DRAFT - select and edit
+D023,Which Kerala districts have a red alert for rain?,2026-10-24,,weather,DRAFT - select and edit
+D024,When is the fifth Kashi Tamil Sangamam being held?,2026-10-24,,culture,DRAFT - select and edit
+D025,What did Modi say at the SRCC centenary celebrations?,2026-09-06,,education,DRAFT - select and edit
+D026,What roadmap did Amit Shah announce to make India drug free?,2026-09-06,,narcotics,DRAFT - select and edit
+D027,How did India's women's team do against Pakistan in the Asia Cup?,2026-09-06,,cricket,DRAFT - select and edit
+D028,What preparations are being made for the BRICS summit in New Delhi?,2026-09-06,,diplomacy,DRAFT - select and edit
+D029,"What happened in the building collapse in Satya Niketan, Delhi?",2026-09-06,,accident,DRAFT - select and edit
+D030,What did Putin discuss with the US envoys?,2026-09-06,,international,DRAFT - select and edit
+D031,What did the OPEC-plus countries discuss at their virtual meeting?,2026-09-06,,oil,DRAFT - select and edit
+D032,Which tiger reserves have succeeded in reintroducing vultures?,2026-09-06,,wildlife,DRAFT - select and edit
+D033,What is the status of the Chilime tunnel rescue?,2026-09-06,,rescue,DRAFT - select and edit
+D034,What verdict was delivered in the Jhiram Valley Maoist attack case?,2026-09-06,,security,DRAFT - select and edit
+D035,How many people are dead or missing in the Nepal flash floods?,2026-08-28,,Nepal floods,DRAFT - select and edit
+D036,What is India doing to rescue Indians stranded in Nepal?,2026-08-28,,Nepal floods,DRAFT - select and edit
+D037,What is the agenda of the Prime Minister's visit to Uzbekistan?,2026-08-28,,diplomacy,DRAFT - select and edit
+D038,What was announced on the 12th anniversary of the Jan Dhan Yojana?,2026-08-28,,finance,DRAFT - select and edit
+D039,When did the Amarnath Yatra conclude?,2026-08-28,,pilgrimage,DRAFT - select and edit
+D040,How was Raksha Bandhan celebrated at the Mahakal temple?,2026-08-28,,festival,DRAFT - select and edit
+D041,What is Delhi doing about rising H1N1 cases?,2026-08-28,,health,DRAFT - select and edit
+D042,Why have sugar prices fallen?,2026-08-28,,prices,DRAFT - select and edit
+D043,What is the government doing about onion prices?,2026-08-28,,prices,DRAFT - select and edit
+D044,How did industrial output grow in July?,2026-08-28,,economy,DRAFT - select and edit
+D045,How did the stock market indices end today?,2026-08-28,,markets,DRAFT - select and edit
+D046,Which Indian player reached the PSA squash final?,2026-08-28,,sports,DRAFT - select and edit
+D047,Why did Modi express grief about King Harald V of Norway?,2026-08-28,,international,DRAFT - select and edit
+D048,What control rooms has the External Affairs Ministry set up for Nepal?,2026-08-28,,Nepal floods,DRAFT - select and edit
+D049,What did the Prime Minister say about 7.8 percent quarterly growth?,,,economy,DRAFT - select and edit
+D050,Which Indian states have been given red alerts for heavy rain?,,,weather,DRAFT - select and edit
+D051,What has the External Affairs Ministry advised Indians about protests abroad?,,,advisory,DRAFT - select and edit
+D052,What is the state of India's defence exports?,,,defence,DRAFT - select and edit
+D053,What are the latest flood warnings for Nepal and Tibet?,2026-08-28:2026-09-06,,Nepal floods,DRAFT - select and edit
+D054,How is India helping Nepal with relief supplies?,2026-08-28:2026-09-06,,Nepal floods,DRAFT - select and edit
+D055,Which sports tournaments is India hosting?,,,sports,DRAFT - select and edit
+D056,What did the Prime Minister say about education and coaching for young people?,,,education,DRAFT - select and edit
+D057,Which new rail sections or train services were inaugurated?,,,railways,DRAFT - select and edit
+D058,What is the latest on building collapses in Delhi?,2026-09-06:2026-10-24,,accident,DRAFT - select and edit
+D059,What is the government's anti-drug strategy?,,,narcotics,DRAFT - select and edit
+D060,What did Amit Shah say about development in Jammu and Kashmir and Rajasthan?,,,politics,DRAFT - select and edit
+D061,What cricket results did India achieve?,,,cricket,DRAFT - select and edit
+D062,What is India's role at the BRICS summit?,,,diplomacy,DRAFT - select and edit
+D063,How did the Indian economy perform in the latest data?,,,economy,DRAFT - select and edit
+D064,What alerts has the IMD issued for the Bay of Bengal?,,,weather,DRAFT - select and edit
+D065,Which religious pilgrimages and festivals were reported?,,,culture,DRAFT - select and edit
+D066,What new health measures has the Centre announced?,,,health,DRAFT - select and edit
+D067,What did the Vice President tell students?,,,education,DRAFT - select and edit
+D068,What was said about cyber security preparedness?,,,technology,DRAFT - select and edit
+D069,Which Indian athletes won titles or medals recently?,,,sports,DRAFT - select and edit
+D070,What security cooperation does India have with Nepal and Sri Lanka?,,,defence,DRAFT - select and edit
+D071,What is happening in India-China border talks?,,,diplomacy,DRAFT - select and edit
+D072,How are oil supply disruptions affecting markets?,,,oil,DRAFT - select and edit
+D073,What did the Finance Minister say about financial stability?,,,finance,DRAFT - select and edit
+D074,Which new schemes were launched by state governments?,,,welfare,DRAFT - select and edit
+D075,What did the Prime Minister say about Mann Ki Baat?,2026-10-24,,radio,DRAFT - select and edit
+D076,What has been said about terrorism and Operation Sindoor?,,,security,DRAFT - select and edit
+D077,What agricultural initiatives did the Agriculture Minister announce?,,,agriculture,DRAFT - select and edit
+D078,What steps are being taken to protect forests and the environment?,,,environment,DRAFT - select and edit
+D079,What is the status of students' protests over exam irregularities?,,,protest,DRAFT - select and edit
+D080,What did the Ministry of External Affairs say about Indians missing abroad?,,,Nepal floods,DRAFT - select and edit

@@ -456,6 +456,24 @@ GPU memory (total in use, nvidia-smi sampled every 0.5 s, not process-only): tin
 
 ---
 
+## 8f. S11 - LLM-assisted annotation (31 Oct 2026)
+
+**These are LLM labels to be human-reviewed. They are never gold on their own.** Annotator: Claude Sonnet 5.5, one pass, no second reviewer. They sit in separate files under `data/gold/llm/` and were not written into any human label column (`annotator_1_label`, `annotator_2_label` and the pair `label` column are still empty, checked). Full record: `data/gold/llm/PROVENANCE.md` (model, date, exact instructions, files read, the statement that no human labels, silver labels, model predictions, similarity scores or hidden-key values were used, and the rules I applied). I am the assistant that built the sheets, which is disclosed there; the pair sheet's per-pair scores were never seen.
+
+| File | Rows | Content |
+|---|---|---|
+| `genre_llm_overlap.csv` | 175 | id, llm_label for the annotator-2 overlap sentences |
+| `genre_llm_rest.csv` | 225 | the other 225 sentences of the annotator-1 sheet |
+| `pairs_llm.csv` | 100 | id, llm_label (same / paraphrase / follow-up / different) |
+| `query_candidates_draft.csv` | 80 | DRAFT queries (52 with a date constraint, 28 without), `relevant_segment_ids` left empty; to be selected and edited by a human |
+| `uncertain_items.csv` | 98 | items where another label was a real option (40 overlap, 37 rest, 21 pairs) |
+
+**Label distributions (LLM labels, for sanity-checking only).** Genre, all 400: International 87, Society & Culture 61, Other 59, Economy 51, Environment 37, Sports 36, Defence & Security 29, Politics 19, Health 12, Science & Technology 9 (overlap 175: International 39, Other 29, Society & Culture 25, Economy 17, Sports 17, Environment 16, Defence & Security 11, Science & Technology 8, Politics 8, Health 5; rest 225: International 48, Society & Culture 36, Economy 34, Other 30, Environment 21, Sports 19, Defence & Security 18, Politics 11, Health 7, Science & Technology 1). Pairs: same 43, different 26, follow-up 22, paraphrase 9.
+
+**Cautions.** Science & Technology (9 sentences) and Health (12) are thin in the 400: scores need at least 5 gold examples per class, and that will fail per split (val or test alone) and in the overlap, which has only 5 Health and 8 Science & Technology sentences, so expect "insufficient support" for those classes after human labelling. `Other` (59) is inflated by bulletin boilerplate and by accident stories, which have no genre of their own in the label set. The pair labels follow the user's four definitions read at story level, and the follow-up / different boundary is the least certain part. Agreement between these LLM labels and the human labels is a measure to compute later (not done); it must not be reported as annotator kappa. TODO: human review of every item, in particular `uncertain_items.csv`; no ASR reference text was produced.
+
+---
+
 ## 9. Member B tasks (communication and admin)
 
 These are for a human to do. Nothing here has been sent or done.
