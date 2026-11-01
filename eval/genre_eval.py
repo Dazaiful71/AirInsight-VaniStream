@@ -28,16 +28,18 @@ import eval_config as cfg  # noqa: E402
 
 NAME = "genre_eval"
 INSUFFICIENT = "insufficient support"
+DEFAULT_GOLD_COL = "annotator_1_label"
 
 
 def default_paths() -> dict:
-    return {"gold": cfg.GOLD_GENRE, "annotator2": cfg.GOLD_GENRE_ANNOTATOR2, "store_db": cfg.STORE_DB,
-            "sample_config": cfg.SAMPLE_CONFIG}
+    return {"gold": cfg.GOLD_GENRE, "gold_col": DEFAULT_GOLD_COL, "annotator2": cfg.GOLD_GENRE_ANNOTATOR2,
+            "store_db": cfg.STORE_DB, "sample_config": cfg.SAMPLE_CONFIG, "sentence_index": cfg.GOLD_SENTENCE_INDEX}
 
 
 def gold_status(paths=None, labels=None):
     p = paths or default_paths()
-    return common.check_labelled_csv(p["gold"], "annotator_1_label", labels or cfg.genre_labels(), "genre gold (annotator 1)")
+    col = p.get("gold_col", DEFAULT_GOLD_COL)
+    return common.check_labelled_csv(p["gold"], col, labels or cfg.genre_labels(), f"genre gold (column {col})")
 
 
 # ---------------------------------------------------------------- metrics
@@ -248,7 +250,8 @@ def finetuned_block(y, texts, splits, labels, ft_cfg, train_texts, train_labels,
 def compute(paths, labels, systems=ALL_SYSTEMS, classifiers=None, finetune=None, two_humans=False):
     gold = common.read_csv(paths["gold"])
     texts = [r["sentence_text"] for r in gold]
-    y = [r["annotator_1_label"].strip() for r in gold]
+    gold_col = paths.get("gold_col", DEFAULT_GOLD_COL)
+    y = [r[gold_col].strip() for r in gold]
     split_of = split_of_dates(paths["sample_config"])
     splits = [split_of.get(r["date"], "unknown") for r in gold]
     bad_days = sorted({r["date"] for r, s in zip(gold, splits) if s not in cfg.GOLD_SPLITS})
@@ -258,7 +261,7 @@ def compute(paths, labels, systems=ALL_SYSTEMS, classifiers=None, finetune=None,
     majority = Counter(tr_labels).most_common(1)[0][0]
     results = {
         "label_set": "nlp_pipeline.GENRE_LABELS",
-        "gold_sheet": {"n": len(gold), "n_by_split": dict(Counter(splits)), "support_by_class": dict(Counter(y))},
+        "gold_sheet": {"path": common.rel(paths["gold"]), "label_column": gold_col, "n": len(gold), "n_by_split": dict(Counter(splits)), "support_by_class": dict(Counter(y))},
         "baseline_training_data": {**tr_info, "n_segments": tr_info["n_training_examples"], "majority_class": majority,
                                    "tfidf": "TfidfVectorizer(ngram_range=(1,2), sublinear_tf=True, min_df=2)",
                                    "logreg": "LogisticRegression(C=1.0, max_iter=1000)", "seed": cfg.SEED},
@@ -305,10 +308,12 @@ def compute(paths, labels, systems=ALL_SYSTEMS, classifiers=None, finetune=None,
                 "category": CAT_PROJECT_CKPT, "status": f"not run: no checkpoint at {common.rel(ckpt or '')}"}
     if two_humans:
         a2 = paths.get("annotator2")
-        if a2 and os.path.isfile(a2):
+        if gold_col == "annotator_2_label":
+            results["inter_annotator_kappa"] = {"status": "not computed: the gold column is the second-annotator column itself"}
+        elif a2 and os.path.isfile(a2):
             results["inter_annotator_kappa"] = {
                 "assumption": "--two-humans was passed: annotator_1_label and annotator_2_label were typed by two different people",
-                **kappa_block({r["id"]: r["annotator_1_label"].strip() for r in gold}, common.read_csv(a2), labels)}
+                **kappa_block({r["id"]: r[gold_col].strip() for r in gold}, common.read_csv(a2), labels)}
         else:
             results["inter_annotator_kappa"] = {"status": "not computed: overlap file missing"}
     else:
@@ -321,7 +326,7 @@ def run(paths=None, results_dir=None, systems=ALL_SYSTEMS, classifiers=None, fin
     p = paths or default_paths()
     labels = cfg.genre_labels()
     st = gold_status(p, labels)
-    inputs = [p["gold"], p["annotator2"], p["store_db"]]
+    inputs = [p["gold"], p["annotator2"], p["store_db"], p.get("sentence_index", "")]
     return common.save_or_report(NAME, st, lambda: compute(p, labels, systems, classifiers, finetune, two_humans), inputs, results_dir)
 
 
@@ -329,6 +334,8 @@ def main() -> int:
     import argparse
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--systems", default=",".join(ALL_SYSTEMS), help="comma list of: " + ", ".join(ALL_SYSTEMS))
+    ap.add_argument("--gold-sheet", default=cfg.GOLD_GENRE, help="CSV with id, date, sentence_text and the human label column (default: the 400-row sheet)")
+    ap.add_argument("--gold-col", default=DEFAULT_GOLD_COL, help="label column of --gold-sheet used as gold (default annotator_1_label)")
     ap.add_argument("--two-humans", action="store_true",
                     help="compute and label inter_annotator_kappa; pass ONLY if annotator_1_label and annotator_2_label come from two different people")
     ap.add_argument("--train-finetune", action="store_true", help="train missing fine-tune seeds first (slow; off by default)")
@@ -338,7 +345,8 @@ def main() -> int:
     if bad:
         ap.error(f"unknown systems: {bad}")
     ft_cfg = {"train": True} if a.train_finetune else None
-    return run(systems=systems, finetune=ft_cfg, two_humans=a.two_humans)[0]
+    paths = {**default_paths(), "gold": a.gold_sheet, "gold_col": a.gold_col}
+    return run(paths, systems=systems, finetune=ft_cfg, two_humans=a.two_humans)[0]
 
 
 if __name__ == "__main__":

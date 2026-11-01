@@ -113,18 +113,20 @@ def llm_labels(path: str, labels: list) -> dict:
     return out
 
 
-def collect_human(paths: dict, labels: list) -> dict:
-    """Human labels per group, without touching any LLM file. group -> (dict or None, message)."""
-    overlap_ids = {r["id"] for r in common.read_csv(paths["overlap_sheet"])} if os.path.isfile(paths["overlap_sheet"]) else set()
-    return {
-        "overlap_human_from_scratch": human_labels(paths["overlap_sheet"], paths["overlap_col"], labels),
-        "rest_human_reviewed": human_labels(paths["rest_sheet"], paths["rest_col"], labels, exclude_ids=overlap_ids),
-    }
+def collect_human(paths: dict, labels: list, groups=GROUPS) -> dict:
+    """Human labels for the requested groups only, without touching any LLM file. group -> (dict or None, message)."""
+    out = {}
+    if "overlap_human_from_scratch" in groups:
+        out["overlap_human_from_scratch"] = human_labels(paths["overlap_sheet"], paths["overlap_col"], labels)
+    if "rest_human_reviewed" in groups:
+        overlap_ids = {r["id"] for r in common.read_csv(paths["overlap_sheet"])} if os.path.isfile(paths["overlap_sheet"]) else set()
+        out["rest_human_reviewed"] = human_labels(paths["rest_sheet"], paths["rest_col"], labels, exclude_ids=overlap_ids)
+    return out
 
 
-def gold_status(paths=None, labels=None):
+def gold_status(paths=None, labels=None, groups=GROUPS):
     p = paths or default_paths()
-    h = collect_human(p, labels or cfg.genre_labels())
+    h = collect_human(p, labels or cfg.genre_labels(), groups)
     ok = any(v[0] is not None for v in h.values())
     msg = "; ".join(f"{g}: {m}" for g, (d, m) in h.items())
     if not ok:
@@ -133,14 +135,15 @@ def gold_status(paths=None, labels=None):
     return common.GoldStatus(True, msg, h)
 
 
-def compute(paths, labels, human=None, resamples=cfg.BOOTSTRAP_RESAMPLES):
-    human = human or collect_human(paths, labels)
-    results = {"output_name": NAME,
-               "what_this_is": "agreement between human labels and LLM pre-labels; NOT inter-annotator agreement",
-               "llm_label_files": {"overlap": common.rel(paths["llm_overlap"]), "rest": common.rel(paths["llm_rest"])},
-               "label_set": "nlp_pipeline.GENRE_LABELS", "groups": {}}
+def compute(paths, labels, human=None, resamples=cfg.BOOTSTRAP_RESAMPLES, groups=GROUPS):
+    human = human or collect_human(paths, labels, groups)
     llm_path = {"overlap_human_from_scratch": paths["llm_overlap"], "rest_human_reviewed": paths["llm_rest"]}
-    for g in GROUPS:
+    results = {"output_name": NAME,
+               "what_this_is": "human_vs_llm_agreement: agreement between human labels and LLM pre-labels (the LLM is not a second human annotator)",
+               "llm_label_files": {g: common.rel(llm_path[g]) for g in groups},
+               "label_set": "nlp_pipeline.GENRE_LABELS", "groups": {},
+               "groups_skipped": {g: "skipped on request (--only-overlap); not reported" for g in GROUPS if g not in groups}}
+    for g in groups:
         got, msg = human[g]
         if got is None:
             results["groups"][g] = {"status": f"not computed: {msg}", "caveat": CAVEAT[g]}
@@ -157,12 +160,16 @@ def compute(paths, labels, human=None, resamples=cfg.BOOTSTRAP_RESAMPLES):
     return results, {"human_vs_llm_agreement": True}
 
 
-def run(paths=None, results_dir=None, resamples=cfg.BOOTSTRAP_RESAMPLES):
+def run(paths=None, results_dir=None, resamples=cfg.BOOTSTRAP_RESAMPLES, groups=GROUPS):
     p = paths or default_paths()
     labels = cfg.genre_labels()
-    st = gold_status(p, labels)
-    inputs = [p["overlap_sheet"], p["rest_sheet"]] + ([p["llm_overlap"], p["llm_rest"]] if st.ok else [])
-    return common.save_or_report(NAME, st, lambda: compute(p, labels, st.rows, resamples), inputs, results_dir)
+    st = gold_status(p, labels, groups)
+    inputs = []
+    if "overlap_human_from_scratch" in groups:
+        inputs += [p["overlap_sheet"]] + ([p["llm_overlap"]] if st.ok else [])
+    if "rest_human_reviewed" in groups:
+        inputs += [p["rest_sheet"]] + ([p["llm_rest"]] if st.ok else [])
+    return common.save_or_report(NAME, st, lambda: compute(p, labels, st.rows, resamples, groups), inputs, results_dir)
 
 
 def main() -> int:
@@ -173,9 +180,12 @@ def main() -> int:
     ap.add_argument("--overlap-col", default=d["overlap_col"], help="column with the human labels typed from scratch")
     ap.add_argument("--rest-sheet", default=d["rest_sheet"])
     ap.add_argument("--rest-col", default=d["rest_col"], help="column with the reviewed human labels")
+    ap.add_argument("--only-overlap", action="store_true",
+                    help="report only the from-scratch overlap group; the reviewed remainder is skipped and its LLM file is not opened")
     a = ap.parse_args()
+    groups = ("overlap_human_from_scratch",) if a.only_overlap else GROUPS
     p = {**d, "overlap_sheet": a.overlap_sheet, "overlap_col": a.overlap_col, "rest_sheet": a.rest_sheet, "rest_col": a.rest_col}
-    return run(p)[0]
+    return run(p, groups=groups)[0]
 
 
 if __name__ == "__main__":

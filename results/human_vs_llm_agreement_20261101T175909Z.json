@@ -1,0 +1,263 @@
+{
+  "name": "human_vs_llm_agreement",
+  "timestamp_utc": "2026-11-01T17:59:09+00:00",
+  "seed": 42,
+  "git_commit": "01b865c88f60d71ec2734e6dc8ae00c4efd0b83a",
+  "inputs": [
+    {
+      "path": "data\\gold\\genre_sheet_annotator2_overlap.csv",
+      "sha256": "bd60f9e5fddc3b4dc07ea5940aec6a78861e7ae7711eb19961e6f9c092d89127"
+    },
+    {
+      "path": "data\\gold\\llm\\genre_llm_overlap.csv",
+      "sha256": "7a0a2121e0e5da5714dc6861613c39c0ec74737b74b75290200ca7c43b80afda"
+    }
+  ],
+  "results": {
+    "output_name": "human_vs_llm_agreement",
+    "what_this_is": "human_vs_llm_agreement: agreement between human labels and LLM pre-labels (the LLM is not a second human annotator)",
+    "llm_label_files": {
+      "overlap_human_from_scratch": "data\\gold\\llm\\genre_llm_overlap.csv"
+    },
+    "label_set": "nlp_pipeline.GENRE_LABELS",
+    "groups": {
+      "overlap_human_from_scratch": {
+        "caveat": "human labels typed from scratch before seeing the LLM labels; independent of the LLM",
+        "n": 175,
+        "observed_agreement": 0.68,
+        "cohens_kappa_human_vs_llm": 0.6351451973194342,
+        "agree_count": 119,
+        "disagree_count": 56,
+        "per_label": {
+          "Politics": {
+            "human_count": 14,
+            "llm_count": 8,
+            "agree_count": 6,
+            "disagree_count_given_human_label": 8,
+            "agreement_rate_given_human_label": 0.42857142857142855
+          },
+          "Economy": {
+            "human_count": 16,
+            "llm_count": 17,
+            "agree_count": 10,
+            "disagree_count_given_human_label": 6,
+            "agreement_rate_given_human_label": 0.625
+          },
+          "Science & Technology": {
+            "human_count": 7,
+            "llm_count": 8,
+            "agree_count": 4,
+            "disagree_count_given_human_label": 3,
+            "agreement_rate_given_human_label": 0.5714285714285714
+          },
+          "Sports": {
+            "human_count": 20,
+            "llm_count": 17,
+            "agree_count": 17,
+            "disagree_count_given_human_label": 3,
+            "agreement_rate_given_human_label": 0.85
+          },
+          "International": {
+            "human_count": 31,
+            "llm_count": 39,
+            "agree_count": 24,
+            "disagree_count_given_human_label": 7,
+            "agreement_rate_given_human_label": 0.7741935483870968
+          },
+          "Defence & Security": {
+            "human_count": 16,
+            "llm_count": 11,
+            "agree_count": 6,
+            "disagree_count_given_human_label": 10,
+            "agreement_rate_given_human_label": 0.375
+          },
+          "Health": {
+            "human_count": 6,
+            "llm_count": 5,
+            "agree_count": 3,
+            "disagree_count_given_human_label": 3,
+            "agreement_rate_given_human_label": 0.5
+          },
+          "Environment": {
+            "human_count": 19,
+            "llm_count": 16,
+            "agree_count": 15,
+            "disagree_count_given_human_label": 4,
+            "agreement_rate_given_human_label": 0.7894736842105263
+          },
+          "Society & Culture": {
+            "human_count": 17,
+            "llm_count": 25,
+            "agree_count": 12,
+            "disagree_count_given_human_label": 5,
+            "agreement_rate_given_human_label": 0.7058823529411765
+          },
+          "Other": {
+            "human_count": 29,
+            "llm_count": 29,
+            "agree_count": 22,
+            "disagree_count_given_human_label": 7,
+            "agreement_rate_given_human_label": 0.7586206896551724
+          }
+        },
+        "min_support_for_rate": 5,
+        "confusion_matrix": {
+          "rows_human_cols_llm": [
+            "Politics",
+            "Economy",
+            "Science & Technology",
+            "Sports",
+            "International",
+            "Defence & Security",
+            "Health",
+            "Environment",
+            "Society & Culture",
+            "Other"
+          ],
+          "counts": [
+            [
+              6,
+              2,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              5,
+              0
+            ],
+            [
+              1,
+              10,
+              3,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              1,
+              4,
+              0,
+              0,
+              0,
+              0,
+              0,
+              2,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              17,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              3,
+              0,
+              0,
+              24,
+              2,
+              0,
+              0,
+              1,
+              1
+            ],
+            [
+              1,
+              0,
+              0,
+              0,
+              6,
+              6,
+              0,
+              0,
+              0,
+              3
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              3,
+              0,
+              1,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              4,
+              0,
+              0,
+              15,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              1,
+              2,
+              0,
+              1,
+              12,
+              1
+            ],
+            [
+              0,
+              1,
+              0,
+              0,
+              1,
+              0,
+              1,
+              0,
+              4,
+              22
+            ]
+          ]
+        },
+        "bootstrap": {
+          "method": "percentile bootstrap over items, 95% CI",
+          "resamples": 1000,
+          "seed": 42,
+          "n_items": 175,
+          "observed_agreement_ci95": [
+            0.6114285714285714,
+            0.7485714285714286
+          ],
+          "cohens_kappa_ci95": [
+            0.5558785839877494,
+            0.7084563052937836
+          ]
+        }
+      }
+    },
+    "groups_skipped": {
+      "rest_human_reviewed": "skipped on request (--only-overlap); not reported"
+    }
+  },
+  "extra": {
+    "human_vs_llm_agreement": true
+  }
+}

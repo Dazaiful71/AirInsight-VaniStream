@@ -97,7 +97,7 @@ def test_agreement_end_to_end_two_groups_named_human_vs_llm(tmp_path):
     d = load(out)
     assert d["name"] == "human_vs_llm_agreement" and d["seed"] == cfg.SEED
     r = d["results"]
-    assert r["output_name"] == "human_vs_llm_agreement" and "NOT inter-annotator" in r["what_this_is"]
+    assert r["output_name"] == "human_vs_llm_agreement" and "human_vs_llm_agreement" in r["what_this_is"]
     g1, g2 = r["groups"]["overlap_human_from_scratch"], r["groups"]["rest_human_reviewed"]
     assert g1["n"] == 4 and g1["agree_count"] == 3 and g1["observed_agreement"] == 0.75
     assert g2["n"] == 6 and g2["agree_count"] == 5 and g2["observed_agreement"] == pytest.approx(5 / 6)
@@ -156,10 +156,13 @@ def test_label_outside_the_set_and_id_mismatch_are_refused(tmp_path):
     assert agreement_eval.run(paths2, str(tmp_path / "res2"), resamples=20) == (2, None)
 
 
-def test_real_human_labels_are_still_empty_so_the_real_run_exits_3():
-    p = subprocess.run([sys.executable, os.path.join(ROOT, "eval", "agreement_eval.py")], cwd=ROOT, capture_output=True, text=True)
-    assert p.returncode == 3 and "NO GOLD" in p.stdout and "LLM files were not opened" in p.stdout
-    assert not [f for f in os.listdir(cfg.RESULTS_DIR) if f.startswith("human_vs_llm_agreement")]
+def test_the_real_agreement_run_is_never_started_by_the_test_suite():
+    """The real evaluation opens the LLM label files; a person must start it, never pytest (no subprocess on the script)."""
+    import glob
+    needle = '"agreement_eval' + '.py"'                       # built in two pieces so this file does not match itself
+    offenders = [os.path.basename(p) for p in glob.glob(os.path.join(ROOT, "tests", "*.py"))
+                 if needle in open(p, encoding="utf-8").read()]
+    assert offenders == []
 
 
 # =============================================================== --two-humans guard
@@ -216,3 +219,33 @@ def test_paper_comments_cite_the_copies_not_the_untracked_originals():
     assert "results/store_reports/store_A_build_report.json" in text
     assert "results/store_reports/store_A_nodedup_build_report.json" in text
     assert "<!-- store_A/build_report.json" not in text and "<!-- store_A_nodedup/build_report.json" not in text
+
+
+# =============================================================== S13: --only-overlap and wording
+def test_only_overlap_skips_the_reviewed_group_and_never_opens_its_files(tmp_path, monkeypatch):
+    paths = _fixture(tmp_path)
+    opened = []
+    real_read = common.read_csv
+    monkeypatch.setattr(common, "read_csv", lambda p: (opened.append(os.path.basename(p)), real_read(p))[1])
+    code, out = agreement_eval.run(paths, str(tmp_path / "res"), resamples=50, groups=("overlap_human_from_scratch",))
+    assert code == 0
+    d = load(out)
+    assert list(d["results"]["groups"]) == ["overlap_human_from_scratch"]            # the other group is not reported
+    assert "rest_human_reviewed" in d["results"]["groups_skipped"] and "not reported" in d["results"]["groups_skipped"]["rest_human_reviewed"]
+    assert "llm_rest.csv" not in opened and "a1.csv" not in opened                   # neither its LLM file nor its human sheet is read
+    assert [os.path.basename(i["path"]) for i in d["inputs"]] == ["overlap.csv", "llm_ov.csv"]
+
+
+def test_only_overlap_does_not_need_the_reviewed_labels_to_exist(tmp_path):
+    paths = _fixture(tmp_path, overlap_labelled=True, rest_labelled=False)
+    code, out = agreement_eval.run(paths, str(tmp_path / "res"), resamples=50, groups=("overlap_human_from_scratch",))
+    assert code == 0 and load(out)["results"]["groups"]["overlap_human_from_scratch"]["n"] == 4
+
+
+def test_no_key_title_or_value_in_the_output_says_inter_annotator(tmp_path):
+    paths = _fixture(tmp_path)
+    for groups in (agreement_eval.GROUPS, ("overlap_human_from_scratch",)):
+        _, out = agreement_eval.run(paths, str(tmp_path / ("res" + str(len(groups)))), resamples=50, groups=groups)
+        text = json.dumps(load(out)).lower()
+        assert "inter-annotator" not in text and "inter_annotator" not in text and "interannotator" not in text
+        assert load(out)["name"] == "human_vs_llm_agreement"
