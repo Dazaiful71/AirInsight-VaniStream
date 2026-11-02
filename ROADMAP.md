@@ -9,7 +9,7 @@ Owners: **Member A** = code, pipeline, evaluation. **Member B** = communication,
 ## 0. Current situation (read this first)
 
 - **Project.** AirInsight is a pipeline that scrapes/ingests All India Radio (AIR) bulletins, transcribes them (Whisper), segments and embeds sentences (MiniLM), drops near-duplicate sentences (cosine >= 0.85), labels genre, stores everything in FAISS + SQLite, and answers questions through two-tier retrieval (SQL prefilter, then FAISS) + Gemini.
-- **Status.** The engineering works. The research is almost entirely unmeasured: no gold labels, no evaluation results, and a corpus of only 5 transcripts (4 from May 2024, 1 live-stream test file). Claims in the repo that nothing reproduces: the "+5 pp" fine-tuning gain in `DEMO.md` (it is written as a decision threshold, not a measured result, but it reads like a claim) and a "35-45% redundancy reduction" figure that now survives only inside `generate_architecture_pdf.py` (the old ARCHITECTURE files are no longer in the folder). **We hold no data from the last 2-3 months; it must be scraped.**
+- **Status.** The engineering works. The research is almost entirely unmeasured: no gold labels, no evaluation results, and a pilot sample of 239 transcribed bulletins (10 days, option A). Claims in the repo that nothing reproduces: the "+5 pp" fine-tuning gain in `DEMO.md` (it is written as a decision threshold, not a measured result, but it reads like a claim) and a "35-45% redundancy reduction" figure that now survives only inside `generate_architecture_pdf.py` (the old ARCHITECTURE files are no longer in the folder). **We hold no data from the last 2-3 months; it must be scraped.**
 - **Two deliverables.**
   1. A short **PILOT PAPER due Thursday 5 Nov 2026**. The professor is strict and will fail us if anything is done improperly or claimed without evidence.
   2. A **THESIS** later, which expands the paper into the full project.
@@ -43,7 +43,7 @@ Owners: **Member A** = code, pipeline, evaluation. **Member B** = communication,
 Ordered by how much each one hurts a paper. Items 13-16 were added after re-checking the scraper source against the data-source findings in section 4.
 
 1. **P0 - Fine-tuned classifier has no trustworthy labels.** Trained on `genre_training_data.csv` (about 375 rows: 374 data rows + header) made of zero-shot silver labels plus synthetic template sentences. Comparing it with the zero-shot model that produced its labels is circular. No human-labelled gold set exists. *Pilot: fix by building a gold set (section 6).*
-2. **P0 - No measured results anywhere.** `DEMO.md` states a "+5 pp" threshold for switching to the fine-tuned model; `generate_architecture_pdf.py` still contains a "35-45% redundancy reduction" figure. Nothing in the repo reproduces either. Corpus is 5 transcripts. *Both claims must be removed or backed by `results/` files.*
+2. **P0 - No measured results anywhere.** `DEMO.md` states a "+5 pp" threshold for switching to the fine-tuned model; `generate_architecture_pdf.py` still contains a "35-45% redundancy reduction" figure. Nothing in the repo reproduces either. The pilot corpus is the 239-bulletin option A sample. *Both claims must be removed or backed by `results/` files.*
 3. **P0 - Filtered FAISS search may be broken (UNVERIFIED, not yet tested).** `vector_store.semantic_search` passes `SearchParametersIVF` to an `IndexFlatIP`. If that raises, it falls into the `except` branch, which searches only the global top-k and then filters, so a narrow filter can return fewer results than exist, or none. Needs a test; fix with `IndexIDMap` + selector, or search over a reconstructed candidate subset.
 4. **P1 - Dedup gate is simplistic.** One fixed threshold (0.85), no justification. Catches near-identical sentences, not paraphrases or follow-ups. The pool is re-stacked with `np.vstack` for every sentence (O(n^2)). Only the batch path writes `dedup_report.json`; the live path does not (confirmed in code).
 5. **P1 - Multilingual is nominal.** The scraper accepts hindi/urdu, but segmentation, embedding model, genre keywords, Gemini prompt and classifier labels are English-only. *OUT OF SCOPE (Thu).*
@@ -67,7 +67,7 @@ Ordered by how much each one hurts a paper. Items 13-16 were added after re-chec
 Tags show the Thursday decision. Detailed pilot sizes are in section 6.
 
 ### P0 - without these the paper will be rejected
-1. **Gold dataset.** Human-labelled genre (2 annotators + Cohen's kappa), duplicate pairs, relevance judgments, fixed splits. **PILOT SIZE for Thursday (section 6); full size is thesis.**
+1. **Gold dataset.** Human-labelled genre (no second human; human-vs-LLM agreement only), duplicate pairs, relevance judgments, fixed splits. **PILOT SIZE for Thursday (section 6); full size is thesis.**
 2. **ASR evaluation.** WER on hand-corrected reference transcripts; compare Whisper sizes. **PILOT: 3-5 bulletins, English only.** (Hindi: OUT OF SCOPE (Thu).)
 3. **Retrieval evaluation.** Query set with relevance judgments; recall@k, MRR, nDCG@k; baselines BM25, vector-only, hybrid, relevance filter on/off. **PILOT: about 50 queries.**
 4. **Dedup evaluation.** P/R/F1 against labelled pairs; threshold sweep 0.70-0.95; baselines MinHash, TF-IDF cosine, exact match. **PILOT: about 100 pairs.**
@@ -209,7 +209,7 @@ No combination ran out of memory. VRAM was sampled every 0.5 s with `nvidia-smi`
 | Full answer-quality evaluation | Reduced to a human check of about 30 questions, reported as such |
 
 **Pilot gold-set targets (state the exact final sizes in the paper):**
-- about 300-500 genre-labelled sentences, with a 150-200 sentence overlap labelled by a SECOND annotator (report Cohen's kappa)
+- about 300-500 genre-labelled sentences, with a 150-200 sentence overlap labelled from scratch by the one human (no second human; human-vs-LLM agreement only)
 - about 100 duplicate pairs
 - about 50 queries with relevance judgments
 - WER on 3-5 hand-corrected bulletins across Whisper sizes
@@ -217,7 +217,7 @@ No combination ran out of memory. VRAM was sampled every 0.5 s with `nvidia-smi`
 If annotation slips, shrink the gold set; never relax the rigor (no unlabelled data reported as gold).
 
 ### Thesis (after Thursday): keep the full plan
-1,500+ genre-labelled sentences, 500+ duplicate pairs, 200+ queries, kappa >= 0.7; 3 months English + 1 month Hindi; all baselines, ablations, seeds, scale benchmarks (10k / 100k / 1M); hybrid + reranker; open-weights baseline; user or case study. The 16-week plan is kept below as **Thesis plan (after Thursday)** (section 12).
+1,500+ genre-labelled sentences, 500+ duplicate pairs, 200+ queries (no second human; human-vs-LLM agreement only); 3 months English + 1 month Hindi; all baselines, ablations, seeds, scale benchmarks (10k / 100k / 1M); hybrid + reranker; open-weights baseline; user or case study. The 16-week plan is kept below as **Thesis plan (after Thursday)** (section 12).
 
 ---
 
@@ -226,7 +226,7 @@ If annotation slips, shrink the gold set; never relax the rigor (no unlabelled d
 - [ ] **No circular evaluation.** Evaluate the fine-tuned classifier only on human-labelled gold data, with gold texts excluded from training. Never compare against the zero-shot model on its own silver labels.
 - [ ] Every README/DEMO/script claim is removed or backed by a script that reproduces it from `results/` (known offenders: DEMO "+5 pp" wording, "35-45%" in `generate_architecture_pdf.py`).
 - [ ] Baselines run: BM25, vector-only, TF-IDF + logistic regression (genre); MinHash, TF-IDF, exact match (dedup).
-- [ ] Real second-annotator Cohen's kappa, even on a small subset.
+- [ ] No second human; human-vs-LLM agreement only (no inter-annotator kappa).
 - [ ] Seeds and config files saved; **one command regenerates every table**; every number in the paper comes from a saved file in `results/`.
 - [ ] Dedup threshold chosen on validation data, not by hand.
 - [ ] Confidence intervals reported; no "significant" without a test.
@@ -257,14 +257,14 @@ Style: one task per prompt, test before moving on. "Test" is what must pass befo
 | Step | Task | Test before moving on |
 |------|------|-----------------------|
 | - | Finish transcription | All sampled files transcribed |
-| A5 | **DONE (31 Oct 2026, skeleton only).** `eval/eval_config.py`, `eval/eval_common.py` (`write_result` stores timestamp, seed, git commit (null: not a repo) and SHA-256 of inputs), `eval/README.md` (result file -> proposed paper table; table numbers PROPOSED), stubs `genre_eval.py`, `dedup_eval.py`, `retrieval_eval.py`, `asr_eval.py`: with unlabelled gold they print a message and exit 3, with labelled gold they exit 4 (metrics not written); no stub writes a result or a number. Tests: `tests/test_eval_skeleton.py` | Any eval writes `results/<name>.json` |
+| A5 | **DONE (31 Oct 2026, skeleton only).** `eval/eval_config.py`, `eval/eval_common.py` (`write_result` stores timestamp, seed, git commit (null when the folder is not a repository) and SHA-256 of inputs), `eval/README.md` (result file -> proposed paper table; table numbers PROPOSED), stubs `genre_eval.py`, `dedup_eval.py`, `retrieval_eval.py`, `asr_eval.py`: with unlabelled gold they print a message and exit 3, with labelled gold they exit 4 (metrics not written); no stub writes a result or a number. Tests: `tests/test_eval_skeleton.py` | Any eval writes `results/<name>.json` |
 | A6 | **CODE DONE (31 Oct 2026); real evaluation waiting for queries.** `eval/retrieval_eval.py`: gold-to-store mapping (exact / via gate rejection / unmapped, counts reported), BM25, vector-only, date-prefilter + vector, full system (genre + date prefilter + vector + relevance filter, no LLM); recall@1/3/5/10, MRR, nDCG@5, per-query results, bootstrap CIs. Tested on a synthetic store only (`tests/test_eval_metrics.py`). Exits 3 until `data/gold/query_sheet.csv` has judged queries. UNVERIFIED on real data. | Runs on a tiny hand-made query set and prints a table |
 | A7 | **CODE DONE (31 Oct 2026); real evaluation waiting for pair labels.** `eval/dedup_eval.py`: sweep 0.60-0.95, bootstrap CIs, threshold chosen on val pairs and reported on test pairs, positive = same + paraphrase (alternative: only same, also reported), baselines exact / normalised / TF-IDF cosine / word 5-gram Jaccard. MinHash baseline added in S9 (word 3-gram shingles, 128 permutations, seed 42). Synthetic tests only. The pair sheet is band-stratified, so results describe the sample, not deployment. UNVERIFIED on real data. | Runs on a tiny labelled pair set |
-| A8 | **CODE DONE (31 Oct 2026); real evaluation waiting for genre labels.** `eval/genre_eval.py`: macro-F1 (classes with >= 5 gold examples only), per-class P/R/F1 + support, confusion matrix, bootstrap CIs, majority-class and TF-IDF + LR baselines trained on train-day SILVER labels only, Cohen's kappa on the overlap file. S9 added: scoring of the project's fast and BART backends (zero-shot) and of fine-tuned checkpoints (5 seeds, mean and std), still synthetic tests only; no fine-tuned checkpoint exists yet. Synthetic tests only; UNVERIFIED on real data. | Runs and clearly prints "silver" in output |
+| A8 | **CODE DONE (31 Oct 2026); real evaluation waiting for genre labels.** `eval/genre_eval.py`: macro-F1 (classes with >= 5 gold examples only), per-class P/R/F1 + support, confusion matrix, bootstrap CIs, majority-class and TF-IDF + LR baselines trained on train-day SILVER labels only; no second human; human-vs-LLM agreement only (no inter-annotator kappa). S9 added: scoring of the project's fast and BART backends (zero-shot) and of fine-tuned checkpoints (5 seeds, mean and std), still synthetic tests only; no fine-tuned checkpoint exists yet. Synthetic tests only; UNVERIFIED on real data. | Runs and clearly prints "silver" in output |
 | A9 | **CODE DONE (31 Oct 2026); real evaluation waiting for hand-corrected references** in `data/gold/asr_refs/` (none exist). `eval/asr_eval.py`: WER with S/D/I per file and overall for tiny/base/small, documented normalisation (numbers not converted). tiny/base outputs are transcribed on demand (that path has never been run; UNVERIFIED). Synthetic tests only. | Runs on 1-2 bulletins with a hand-corrected reference |
 | - | **DONE as skeleton (31 Oct 2026):** `run_all.py` with stages ingest, genre, dedup, retrieval, asr, `--stage`, `--force`, `--list`, state in `results/run_all_state.json`, skip-if-done (inputs hashed), stops with exit 3 at the first stage whose gold is missing. **Not done / UNVERIFIED:** `--device` and `--model` flags (ingest stage has only `--classifier`); the full chain was never run end to end because no gold is labelled; the eval stages are stubs. Original task: `run_all.py` skeleton: resumable stages, `--device`, `--model` flags | Dry run on a tiny subset completes |
 | Night | Copy code + sample to the cluster; run the **5-minute smoke test** (CUDA, ffmpeg, imports, one short transcription) | Smoke test passes, or fallback to home GPU is decided |
-| Both | Start annotation (review Claude's pre-labels). Member B or a third person starts the second-annotator overlap subset. Start drafting paper sections | Gold files saved under `data/gold/` with the split recorded |
+| Both | Start annotation (review Claude's pre-labels). The overlap subset is labelled from scratch by the one human (no second human; human-vs-LLM agreement only). Start drafting paper sections | Gold files saved under `data/gold/` with the split recorded |
 
 ### Mon 2 Nov - cluster (sbatch) - Member A
 | Task | Test |
@@ -342,7 +342,7 @@ Full machine-readable plan: `config/sample_config.json`, block `pilot_plan_s4` (
 **What really limits us (reasoning from the numbers above).**
 - **Transcription is not the problem for A.** About 1-1.6 h on the laptop GPU, can run in the background (even overnight) while labelling. For B it is about 2.2-3.5 h on the laptop, still feasible, or faster on the A6000 (unmeasured).
 - **Download:** about 10-30 min, UNMEASURED; it only becomes the bottleneck if the site throttles. Check it on the first 20 files before committing.
-- **The hand-labelling time is the real limit and is the same for A and B,** because the gold targets are fixed (about 300-500 genre sentences with a 150-200 sentence second-annotator overlap, about 100 duplicate pairs, about 50 queries, 3-5 hand-corrected bulletins) and A's test days alone already hold roughly 47 bulletins, about 1,500 raw sentences, enough to draw them from. Labelling speed per item is UNMEASURED (time the first 50 sentences).
+- **The hand-labelling time is the real limit and is the same for A and B,** because the gold targets are fixed (about 300-500 genre sentences with a 150-200 sentence overlap labelled from scratch by the one human (no second human; human-vs-LLM agreement only), about 100 duplicate pairs, about 50 queries, 3-5 hand-corrected bulletins) and A's test days alone already hold roughly 47 bulletins, about 1,500 raw sentences, enough to draw them from. Labelling speed per item is UNMEASURED (time the first 50 sentences).
 - **Other possibly slow, UNMEASURED step:** after transcription, embedding plus classification of the sentences (zero-shot BART on 7,000 or 15,000 sentences). This grows with the option and was not timed.
 - **Most likely bottleneck, option A:** the human labelling (and, for the WER bulletins, hand-correcting transcripts). **Option B:** the same labelling, plus about 2-3 extra hours of laptop transcription and a larger classification/dedup run; the extra days do not reduce the labelling work.
 
@@ -498,7 +498,7 @@ These are for a human to do. Nothing here has been sent or done.
 
 - [ ] **TODAY (Sat)** Email the cluster admins (varun.jhaveri23@spit.ac.in, rehan.ansari24@spit.ac.in) and get **written** answers to: remote access from home / VPN; internet access from compute nodes (newsonair.gov.in, pip, Hugging Face); ffmpeg available or a module; CUDA support for faster-whisper; queue wait times; confirmation that our research use (transcribing AIR audio, training, evals) is an approved task. Report answers to Member A **before Sunday night**.
 - [ ] **TODAY (Sat)** Tell the professor the agreed Thursday scope ("pilot-scale evaluation now; full dataset and evaluation are the thesis") and confirm the paper's venue/format, page limit and what he expects to see. Record his reply here: `TODO: ______`.
-- [ ] **By Sunday** Find the second annotator for the overlap subset (a classmate is fine) and brief them on the genre labels.
+- [ ] **By Sunday** No second human; human-vs-LLM agreement only: no second annotator to find or brief.
 - [x] Home GPU recorded: NVIDIA GeForce RTX 2050, 4 GB VRAM (measured, section 5). No action needed.
 - [ ] Book or confirm cluster access for Mon-Tue; ask about Wednesday.
 - [ ] Track the writing: owns the paper skeleton and the section 7 checklist; verifies each number in the paper maps to a file in `results/`.
@@ -539,8 +539,8 @@ Kept from the original 16-week plan. Not required for the 5 Nov pilot.
 ### Contribution options
 | Option | Venue type | Core claim | Extra work |
 |--------|-----------|------------|------------|
-| A. Dataset + system | Resource / demo track, Indian-language NLP workshop | "First open, annotated corpus of AIR bulletins with a streaming retrieval baseline" | Section 3 items 1-7, license, release |
-| B. Method | Workshop or main track | "Streaming novelty filtering + two-tier retrieval improves speech-news RAG vs. standard RAG" | Items 3, 4, 7, 8, 9, 10 |
+| A. Dataset + system | Resource / demo track, Indian-language NLP workshop | "Open, annotated corpus of AIR bulletins with a streaming retrieval baseline" | Section 3 items 1-7, license, release |
+| B. Method | Workshop or main track | "Streaming novelty filtering + two-tier retrieval compared with standard RAG on speech-news" | Items 3, 4, 7, 8, 9, 10 |
 | C. Systems | Demo | "End-to-end live broadcast to chatbot" | Items 2, 8, 14 |
 
 Recommendation: Option A with B as the technical section.
@@ -550,14 +550,14 @@ Recommendation: Option A with B as the technical section.
 |-------|-------|------|-----------|
 | 0 | 1 | Fix blockers | FAISS filtered search fixed + test; hour field unified; contribution written in one sentence |
 | 1 | 2-6 | Collect data | At least 3 months English plus 1 month Hindi scraped and transcribed; `metadata.csv` complete; storage and license notes |
-| 2 | 4-8 | Annotate | 1,500+ sentences genre-labelled by 2 annotators (kappa >= 0.7); 500+ duplicate pairs; 200+ queries; reference transcripts for 100 bulletin minutes |
+| 2 | 4-8 | Annotate | 1,500+ sentences genre-labelled by one human (no second human; human-vs-LLM agreement only); 500+ duplicate pairs; 200+ queries; reference transcripts for 100 bulletin minutes |
 | 3 | 7-10 | Evaluation code | One script per metric writing JSON; one command regenerates every table |
 | 4 | 9-12 | Baselines and ablations | All baselines run; mean +/- std over seeds |
 | 5 | 11-13 | Scale | Latency / memory at 10k / 100k / 1M; flat vs HNSW |
 | 6 | 12-14 | Improvements | Hybrid / reranker / window chunks only if baselines show gaps and the ablation proves they help |
 | 7 | 14-16 | Write and release | Paper, related work, limitations; public repo with license, seeds, configs; dataset release |
 
-### Thesis targets (adjust after the first baseline run; these are goals, not results)
+### Thesis targets (adjust after the initial baseline run; these are goals, not results)
 - Genre: report macro-F1 on the gold test set; aim for fine-tuned > zero-shot with a statistical test.
 - Retrieval: full system must beat vector-only and BM25 on nDCG@5; if not, the contribution is the dataset, not the method.
 - Dedup: threshold chosen on validation data; report F1.
